@@ -201,7 +201,7 @@ https://github.com/hisubhaan
 
 ### Instagram
 
-@subh5an
+https://instagram.com/subh5an
 
 ### Email
 
