@@ -10,8 +10,8 @@
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
 </p>
-#curiocode
 
+## curiocode
 > Learn. Build. Create.
 
 A modern, fully responsive coding education platform designed to make programming education accessible, structured, and engaging.
