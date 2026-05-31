@@ -1,7 +1,6 @@
 <p align="center">
   <img src="https://img.shields.io/github/stars/hisubhaan/curiocode?style=for-the-badge" />
   <img src="https://img.shields.io/github/forks/hisubhaan/curiocode?style=for-the-badge" />
-  <img src="https://img.shields.io/github/license/hisubhaan/curiocode?style=for-the-badge" />
 </p>
 
 <p align="center">
