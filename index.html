@@ -1,0 +1,2834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="curiocode — Learn HTML, CSS, JavaScript, and Python through deep, structured lessons. Free coding education built for real understanding."/>
+<title>curiocode — Learn. Build. Create.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════
+   DESIGN TOKENS — subhaan-DESIGN.md
+═══════════════════════════════════════ */
+:root {
+  --color-dark-background: #000000;
+  --color-dark-secondary: #111111;
+  --color-dark-accent: #222222;
+  --color-white-text: #ffffff;
+  --color-gray-text: #afafaf;
+  --color-medium-gray: #888888;
+  --color-border: #2a2a2a;
+
+  --font-dm-sans: "DM Sans", sans-serif;
+  --font-code: "Fira Code", monospace;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-2xl: 32px;
+  --spacing-3xl: 40px;
+  --spacing-4xl: 72px;
+  --spacing-5xl: 120px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-full: 999px;
+
+  --nav-height: 72px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Accent colors for languages */
+  --html-color: #e44d26;
+  --css-color: #264de4;
+  --js-color: #c9a800;
+  --py-color: #3776ab;
+}
+
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-dm-sans);
+  background: var(--color-dark-background);
+  color: var(--color-white-text);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: var(--font-dm-sans); border: none; background: none; }
+ul { list-style: none; }
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--color-dark-secondary); }
+::-webkit-scrollbar-thumb { background: var(--color-dark-accent); border-radius: 3px; }
+
+/* ═══════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════ */
+.container { max-width: 1120px; margin: 0 auto; padding: 0 var(--spacing-xl); }
+.page-view { display: none; }
+.page-view.active { display: block; }
+.section { padding: var(--spacing-5xl) 0; }
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY
+═══════════════════════════════════════ */
+.hero-heading {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.section-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.body-text { font-size: 1rem; font-weight: 400; line-height: 1.65; color: var(--color-gray-text); }
+.label-text { font-size: 0.75rem; font-weight: 500; color: var(--color-medium-gray); letter-spacing: 0.08em; text-transform: uppercase; }
+.code-text { font-family: var(--font-code); font-size: 0.875rem; }
+
+/* ═══════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--spacing-sm);
+  padding: 12px 24px; border-radius: var(--radius-sm);
+  font-family: var(--font-dm-sans); font-size: 0.875rem; font-weight: 500;
+  transition: all var(--transition); cursor: pointer; line-height: 1;
+}
+.btn-primary {
+  background: var(--color-white-text); color: var(--color-dark-background);
+}
+.btn-primary:hover { background: #e0e0e0; transform: translateY(-1px); }
+.btn-outline {
+  border: 1px solid var(--color-border); color: var(--color-gray-text);
+}
+.btn-outline:hover { border-color: #555; color: var(--color-white-text); background: var(--color-dark-accent); }
+.btn-ghost { color: var(--color-gray-text); }
+.btn-ghost:hover { color: var(--color-white-text); }
+.btn-sm { padding: 8px 16px; font-size: 0.8125rem; }
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: var(--nav-height);
+  display: flex; align-items: center;
+  transition: background var(--transition), border-color var(--transition);
+}
+#navbar.scrolled {
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 var(--spacing-xl);
+}
+.nav-logo {
+  font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-logo-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-white-text); opacity: 0.5;
+}
+.nav-links { display: flex; align-items: center; gap: 2px; }
+.nav-links a {
+  padding: 7px 12px; border-radius: var(--radius-sm);
+  font-size: 0.875rem; font-weight: 400; color: var(--color-medium-gray);
+  transition: all var(--transition);
+}
+.nav-links a:hover, .nav-links a.active { color: var(--color-white-text); background: var(--color-dark-accent); }
+.nav-actions { display: flex; align-items: center; gap: var(--spacing-sm); }
+.hamburger {
+  display: none; flex-direction: column; gap: 4px;
+  width: 36px; height: 36px; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); border: 1px solid var(--color-border);
+}
+.hamburger span { display: block; width: 16px; height: 1.5px; background: var(--color-white-text); border-radius: 2px; transition: all var(--transition); }
+.hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+.mobile-menu {
+  display: none; position: fixed; top: var(--nav-height); left: 0; right: 0;
+  background: rgba(0,0,0,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  z-index: 999; flex-direction: column; gap: 4px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  padding: 11px 14px; border-radius: var(--radius-sm);
+  font-size: 0.9rem; color: var(--color-gray-text);
+  transition: all var(--transition);
+}
+.mobile-menu a:hover { color: var(--color-white-text); background: var(--color-dark-accent); }
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+#page-home-hero {
+  min-height: 100vh; display: flex; align-items: center;
+  padding: var(--nav-height) 0 80px;
+  position: relative; overflow: hidden;
+}
+.hero-gradient {
+  position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,255,255,0.06) 0%, transparent 70%);
+}
+.hero-grid-lines {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.hero-content {
+  position: relative; z-index: 1;
+  text-align: center; max-width: 760px; margin: 0 auto;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  font-size: 0.75rem; font-weight: 500; color: var(--color-medium-gray);
+  margin-bottom: var(--spacing-2xl);
+  animation: fadeUp 0.5s ease both;
+}
+.hero-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #4caf50; }
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700; line-height: 1.1; letter-spacing: -0.03em;
+  margin-bottom: var(--spacing-xl);
+  animation: fadeUp 0.5s 0.08s ease both;
+}
+.hero-title .outlined {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.5);
+  color: transparent;
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--color-gray-text); max-width: 520px;
+  margin: 0 auto var(--spacing-3xl); line-height: 1.7;
+  animation: fadeUp 0.5s 0.16s ease both;
+}
+.hero-actions {
+  display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;
+  margin-bottom: var(--spacing-5xl);
+  animation: fadeUp 0.5s 0.24s ease both;
+}
+.hero-stats {
+  display: flex; gap: var(--spacing-3xl); justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.5s 0.32s ease both;
+}
+.hero-stat { text-align: center; }
+.hero-stat-number { font-size: 1.75rem; font-weight: 700; }
+.hero-stat-label { font-size: 0.75rem; color: var(--color-medium-gray); margin-top: 2px; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════
+   TAGS / CHIPS
+═══════════════════════════════════════ */
+.tag {
+  display: inline-block; padding: 3px 10px; border-radius: var(--radius-full);
+  font-size: 0.7rem; font-weight: 500; border: 1px solid;
+}
+.tag-html { color: var(--html-color); border-color: rgba(228,77,38,0.3); background: rgba(228,77,38,0.08); }
+.tag-css  { color: #5b80f5; border-color: rgba(38,77,228,0.3); background: rgba(38,77,228,0.08); }
+.tag-js   { color: var(--js-color); border-color: rgba(240,219,79,0.3); background: rgba(240,219,79,0.08); }
+.tag-py   { color: #6ba3c9; border-color: rgba(55,118,171,0.3); background: rgba(55,118,171,0.08); }
+.tag-gray { color: var(--color-medium-gray); border-color: var(--color-border); background: transparent; }
+
+/* ═══════════════════════════════════════
+   COURSE CARDS
+═══════════════════════════════════════ */
+.courses-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--spacing-xl);
+}
+.course-card {
+  background: var(--color-dark-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.course-card:hover { border-color: #444; transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+.course-banner {
+  height: 160px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: flex-start;
+  padding: var(--spacing-lg);
+}
+.course-banner-code {
+  font-family: var(--font-code); font-size: 0.68rem; line-height: 1.7;
+  opacity: 0.75; white-space: pre; position: relative; z-index: 1;
+}
+.html-banner { background: linear-gradient(135deg, #1a0800, #0d0d0d); }
+.html-banner .course-banner-code { color: #e96a42; }
+.css-banner  { background: linear-gradient(135deg, #00040f, #0d0d0d); }
+.css-banner  .course-banner-code { color: #5b80f5; }
+.js-banner   { background: linear-gradient(135deg, #0f0c00, #0d0d0d); }
+.js-banner   .course-banner-code { color: #d4b416; }
+.py-banner   { background: linear-gradient(135deg, #000d1a, #0d0d0d); }
+.py-banner   .course-banner-code { color: #5a9ec9; }
+.course-body { padding: var(--spacing-xl); }
+.course-title { font-size: 1rem; font-weight: 700; margin: var(--spacing-sm) 0 var(--spacing-sm); }
+.course-desc { font-size: 0.84rem; color: var(--color-gray-text); line-height: 1.6; margin-bottom: var(--spacing-lg); }
+.course-meta { display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); }
+.course-meta span { font-size: 0.75rem; color: var(--color-medium-gray); }
+.course-progress-bar { height: 2px; background: var(--color-dark-accent); border-radius: 2px; margin-bottom: var(--spacing-lg); overflow: hidden; }
+.course-progress-fill { height: 100%; border-radius: 2px; width: 0; transition: width 1.2s ease; }
+.course-btn {
+  width: 100%; padding: 10px; border-radius: var(--radius-sm);
+  font-size: 0.8125rem; font-weight: 500; text-align: center;
+  border: 1px solid; transition: all var(--transition);
+  font-family: var(--font-dm-sans);
+}
+
+/* ═══════════════════════════════════════
+   SECTION HEADERS
+═══════════════════════════════════════ */
+.section-label-row {
+  display: flex; align-items: baseline; gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);
+}
+.section-num { font-size: 0.75rem; font-weight: 500; color: var(--color-medium-gray); }
+
+/* ═══════════════════════════════════════
+   LESSON PANEL (expanded lesson content)
+═══════════════════════════════════════ */
+.lesson-overlay {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  background: var(--color-dark-background);
+  overflow-y: auto;
+}
+.lesson-overlay.open { display: block; }
+.lesson-nav {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(0,0,0,0.9); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 var(--spacing-xl); height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.lesson-nav-left { display: flex; align-items: center; gap: var(--spacing-xl); }
+.lesson-back-btn {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.8125rem; color: var(--color-medium-gray);
+  cursor: pointer; transition: color var(--transition);
+  background: none; border: none; font-family: var(--font-dm-sans);
+}
+.lesson-back-btn:hover { color: var(--color-white-text); }
+.lesson-nav-title { font-size: 0.875rem; font-weight: 500; color: var(--color-gray-text); }
+.lesson-body { max-width: 820px; margin: 0 auto; padding: 56px var(--spacing-xl) 120px; }
+.lesson-eyebrow { margin-bottom: var(--spacing-xl); }
+.lesson-main-title { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; margin-bottom: var(--spacing-xl); }
+.lesson-intro { font-size: 1.0625rem; color: var(--color-gray-text); line-height: 1.75; margin-bottom: var(--spacing-3xl); border-left: 2px solid var(--color-dark-accent); padding-left: var(--spacing-xl); }
+
+/* Lesson content sections */
+.lesson-section { margin-bottom: var(--spacing-3xl); }
+.lesson-section-title { font-size: 1.125rem; font-weight: 700; margin-bottom: var(--spacing-lg); }
+.lesson-text { font-size: 0.9375rem; color: var(--color-gray-text); line-height: 1.75; margin-bottom: var(--spacing-lg); }
+.lesson-text strong { color: var(--color-white-text); font-weight: 600; }
+
+/* Code blocks */
+.code-block {
+  background: var(--color-dark-secondary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: var(--spacing-xl);
+  margin: var(--spacing-xl) 0; overflow-x: auto;
+}
+.code-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md); border-bottom: 1px solid var(--color-border);
+}
+.code-block-lang { font-size: 0.7rem; font-weight: 500; color: var(--color-medium-gray); text-transform: uppercase; letter-spacing: 0.1em; }
+.copy-btn {
+  font-size: 0.7rem; color: var(--color-medium-gray);
+  padding: 4px 8px; border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border); cursor: pointer;
+  transition: all var(--transition); font-family: var(--font-dm-sans);
+}
+.copy-btn:hover { color: var(--color-white-text); border-color: #555; background: var(--color-dark-accent); }
+.code-block pre { font-family: var(--font-code); font-size: 0.84rem; line-height: 1.75; color: var(--color-white-text); white-space: pre; }
+.code-block .c  { color: var(--color-medium-gray); } /* comments */
+.code-block .k  { color: #c792ea; } /* keywords */
+.code-block .s  { color: #c3e88d; } /* strings */
+.code-block .n  { color: #82aaff; } /* numbers/names */
+.code-block .f  { color: #ffcb6b; } /* functions */
+.code-block .o  { color: #89ddff; } /* operators / tags */
+.code-block .a  { color: #f07178; } /* attributes */
+.code-block .v  { color: #eeffff; } /* values */
+
+/* Callout boxes */
+.callout {
+  border-radius: var(--radius-md); padding: var(--spacing-lg) var(--spacing-xl);
+  margin: var(--spacing-xl) 0; border-left: 3px solid;
+}
+.callout-tip    { background: rgba(76,175,80,0.06); border-color: rgba(76,175,80,0.5); }
+.callout-warn   { background: rgba(255,152,0,0.06); border-color: rgba(255,152,0,0.5); }
+.callout-info   { background: rgba(33,150,243,0.06); border-color: rgba(33,150,243,0.5); }
+.callout-label  { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.callout-tip    .callout-label { color: #4caf50; }
+.callout-warn   .callout-label { color: #ff9800; }
+.callout-info   .callout-label { color: #2196f3; }
+.callout-text   { font-size: 0.875rem; color: var(--color-gray-text); line-height: 1.6; }
+
+/* Concept table */
+.concept-table { width: 100%; border-collapse: collapse; margin: var(--spacing-xl) 0; }
+.concept-table th, .concept-table td {
+  padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--color-border);
+  font-size: 0.84375rem;
+}
+.concept-table th { font-size: 0.7rem; font-weight: 600; color: var(--color-medium-gray); text-transform: uppercase; letter-spacing: 0.08em; background: var(--color-dark-secondary); }
+.concept-table td { color: var(--color-gray-text); }
+.concept-table td:first-child { font-family: var(--font-code); font-size: 0.8rem; color: var(--color-white-text); }
+.concept-table tr:last-child td { border-bottom: none; }
+
+/* Quiz inside lesson */
+.lesson-quiz { background: var(--color-dark-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-2xl); margin-top: var(--spacing-3xl); }
+.lesson-quiz-title { font-size: 0.75rem; font-weight: 700; color: var(--color-medium-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--spacing-xl); }
+.lesson-quiz-q { font-size: 0.9375rem; font-weight: 600; margin-bottom: var(--spacing-lg); }
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; }
+.quiz-opt {
+  padding: 11px 16px; border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+  font-size: 0.875rem; text-align: left; cursor: pointer; transition: all var(--transition);
+  font-family: var(--font-dm-sans); color: var(--color-gray-text);
+  background: none;
+}
+.quiz-opt:hover:not(:disabled) { border-color: #555; color: var(--color-white-text); background: var(--color-dark-accent); }
+.quiz-opt.correct { border-color: rgba(76,175,80,0.6); background: rgba(76,175,80,0.1); color: #81c784; }
+.quiz-opt.wrong   { border-color: rgba(244,67,54,0.6); background: rgba(244,67,54,0.08); color: #e57373; }
+.quiz-feedback { margin-top: var(--spacing-md); font-size: 0.84rem; line-height: 1.6; color: var(--color-gray-text); display: none; }
+
+/* Lesson nav (prev/next) */
+.lesson-footer-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 64px; padding-top: var(--spacing-xl); border-top: 1px solid var(--color-border); gap: var(--spacing-lg); flex-wrap: wrap; }
+.lesson-nav-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border); cursor: pointer;
+  font-size: 0.84rem; color: var(--color-gray-text); transition: all var(--transition);
+  background: none; font-family: var(--font-dm-sans);
+}
+.lesson-nav-btn:hover { border-color: #555; color: var(--color-white-text); background: var(--color-dark-accent); }
+.lesson-nav-btn.primary { background: var(--color-white-text); color: var(--color-dark-background); border-color: var(--color-white-text); }
+.lesson-nav-btn.primary:hover { background: #e0e0e0; }
+
+/* ═══════════════════════════════════════
+   COURSE DETAIL PAGE
+═══════════════════════════════════════ */
+.course-page { display: none; }
+.course-page.active { display: block; }
+.course-detail-wrap { padding: calc(var(--nav-height) + 48px) 0 96px; }
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.8125rem; color: var(--color-medium-gray);
+  cursor: pointer; transition: color var(--transition); margin-bottom: var(--spacing-2xl);
+  background: none; border: none; font-family: var(--font-dm-sans);
+}
+.back-btn:hover { color: var(--color-white-text); }
+.course-header-block {
+  border: 1px solid var(--color-border); border-radius: var(--radius-md);
+  padding: 48px; margin-bottom: var(--spacing-2xl);
+  background: var(--color-dark-secondary);
+  position: relative; overflow: hidden;
+}
+.course-header-block::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+}
+.course-header-title { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 700; margin: var(--spacing-md) 0 var(--spacing-md); letter-spacing: -0.02em; }
+.course-header-desc { font-size: 0.9375rem; color: var(--color-gray-text); max-width: 580px; line-height: 1.7; }
+.course-stats-row { display: flex; gap: var(--spacing-3xl); margin-top: var(--spacing-xl); flex-wrap: wrap; }
+.course-stat-val { font-size: 1.375rem; font-weight: 700; }
+.course-stat-lbl { font-size: 0.75rem; color: var(--color-medium-gray); margin-top: 2px; }
+.course-layout { display: grid; grid-template-columns: 1fr 300px; gap: var(--spacing-2xl); }
+
+/* Module list */
+.module-list { display: flex; flex-direction: column; gap: 6px; }
+.module-item {
+  display: flex; align-items: center; gap: var(--spacing-lg);
+  padding: 16px var(--spacing-lg); border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border); cursor: pointer; transition: all var(--transition);
+  background: var(--color-dark-secondary);
+}
+.module-item:hover { border-color: #444; background: var(--color-dark-accent); }
+.module-num {
+  width: 32px; height: 32px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; flex-shrink: 0; font-family: var(--font-code);
+}
+.module-info { flex: 1; }
+.module-title { font-size: 0.875rem; font-weight: 600; margin-bottom: 2px; }
+.module-meta { font-size: 0.75rem; color: var(--color-medium-gray); }
+.module-arrow { color: var(--color-medium-gray); font-size: 0.75rem; flex-shrink: 0; }
+
+/* Sidebar */
+.sidebar-card { background: var(--color-dark-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-xl); margin-bottom: var(--spacing-lg); }
+.sidebar-card-title { font-size: 0.7rem; font-weight: 700; color: var(--color-medium-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--spacing-lg); }
+.sidebar-item { padding: 10px 0; border-bottom: 1px solid var(--color-border); font-size: 0.84rem; color: var(--color-gray-text); display: flex; align-items: flex-start; gap: 8px; }
+.sidebar-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+/* Quiz section on course detail */
+.quiz-section { background: var(--color-dark-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-2xl); margin-top: var(--spacing-2xl); }
+.quiz-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-medium-gray); margin-bottom: var(--spacing-xl); }
+.quiz-question { font-size: 0.9375rem; font-weight: 600; margin-bottom: var(--spacing-lg); }
+.quiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: var(--spacing-lg); }
+.quiz-option {
+  padding: 11px 16px; border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+  cursor: pointer; font-size: 0.875rem; text-align: left; transition: all var(--transition);
+  font-family: var(--font-dm-sans); color: var(--color-gray-text); background: none;
+}
+.quiz-option:hover:not(:disabled) { border-color: #555; color: var(--color-white-text); }
+.quiz-option.correct { border-color: rgba(76,175,80,0.6); background: rgba(76,175,80,0.08); color: #81c784; }
+.quiz-option.wrong   { border-color: rgba(244,67,54,0.6); background: rgba(244,67,54,0.06); color: #e57373; }
+.quiz-feedback { font-size: 0.84rem; color: var(--color-gray-text); display: none; line-height: 1.6; }
+
+/* ═══════════════════════════════════════
+   LEARNING PATH
+═══════════════════════════════════════ */
+.path-wrap { max-width: 640px; }
+.path-item { display: flex; gap: var(--spacing-2xl); margin-bottom: 48px; position: relative; }
+.path-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.path-node {
+  width: 44px; height: 44px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; cursor: pointer; transition: all var(--transition);
+  border: 1px solid var(--color-border); background: var(--color-dark-secondary);
+  flex-shrink: 0;
+}
+.path-node:hover { border-color: #555; background: var(--color-dark-accent); transform: scale(1.05); }
+.path-line { width: 1px; flex: 1; background: var(--color-border); margin: 6px 0; min-height: 32px; }
+.path-step { font-size: 0.7rem; color: var(--color-medium-gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.path-title { font-size: 1.125rem; font-weight: 700; margin-bottom: var(--spacing-sm); }
+.path-desc { font-size: 0.875rem; color: var(--color-gray-text); line-height: 1.65; margin-bottom: var(--spacing-md); }
+.path-skills { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ═══════════════════════════════════════
+   RESOURCES
+═══════════════════════════════════════ */
+.res-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--color-border); margin-bottom: var(--spacing-2xl); }
+.res-tab { padding: 10px 16px; font-size: 0.875rem; cursor: pointer; color: var(--color-medium-gray); transition: all var(--transition); border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.res-tab.active { color: var(--color-white-text); border-bottom-color: var(--color-white-text); }
+.res-panel { display: none; }
+.res-panel.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--spacing-xl); }
+.resource-card { background: var(--color-dark-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-xl); cursor: pointer; transition: all var(--transition); }
+.resource-card:hover { border-color: #444; background: var(--color-dark-accent); }
+.resource-icon { font-size: 1.5rem; margin-bottom: var(--spacing-md); }
+.resource-title { font-size: 0.9375rem; font-weight: 700; margin-bottom: 6px; }
+.resource-desc { font-size: 0.8125rem; color: var(--color-gray-text); line-height: 1.6; }
+
+/* ═══════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════ */
+.dashboard-grid { display: grid; grid-template-columns: 1fr 280px; gap: var(--spacing-2xl); }
+.progress-item { display: flex; align-items: center; gap: var(--spacing-lg); padding: var(--spacing-lg) 0; border-bottom: 1px solid var(--color-border); }
+.progress-item:last-child { border-bottom: none; }
+.progress-icon { font-size: 1.1rem; flex-shrink: 0; }
+.progress-info { flex: 1; }
+.progress-name { font-size: 0.875rem; font-weight: 600; margin-bottom: 6px; }
+.progress-bar { height: 3px; background: var(--color-dark-accent); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.4s ease; }
+.progress-pct { font-size: 0.75rem; color: var(--color-medium-gray); flex-shrink: 0; }
+
+/* ═══════════════════════════════════════
+   CERTIFICATES
+═══════════════════════════════════════ */
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-xl); }
+.cert-card {
+  background: var(--color-dark-secondary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: var(--spacing-2xl); position: relative; overflow: hidden;
+}
+.cert-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
+.cert-logo { font-size: 0.875rem; font-weight: 700; display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--spacing-2xl); }
+.cert-badge { font-size: 1.25rem; }
+.cert-certifies { font-size: 0.7rem; color: var(--color-medium-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+.cert-name { font-size: 1.375rem; font-weight: 700; margin-bottom: var(--spacing-sm); }
+.cert-course { font-size: 0.875rem; color: var(--color-gray-text); margin-bottom: var(--spacing-xl); }
+.cert-divider { height: 1px; background: var(--color-border); margin: var(--spacing-xl) 0; }
+.cert-footer { display: flex; justify-content: space-between; margin-bottom: var(--spacing-xl); }
+.cert-info-label { font-size: 0.65rem; color: var(--color-medium-gray); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.cert-info-value { font-size: 0.8125rem; font-weight: 600; }
+.cert-id { font-family: var(--font-code); font-size: 0.75rem; color: var(--color-medium-gray); }
+.cert-actions { display: flex; gap: 8px; }
+
+/* ═══════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════ */
+.about-mission { font-size: 1rem; color: var(--color-gray-text); line-height: 1.8; max-width: 680px; }
+.creator-card { display: flex; gap: var(--spacing-2xl); background: var(--color-dark-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-2xl); margin-bottom: var(--spacing-2xl); align-items: flex-start; }
+.creator-avatar { width: 64px; height: 64px; border-radius: var(--radius-sm); background: var(--color-dark-accent); display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0; }
+.creator-name { font-size: 1.125rem; font-weight: 700; margin-bottom: 4px; }
+.creator-role { font-size: 0.75rem; color: var(--color-medium-gray); font-family: var(--font-code); margin-bottom: var(--spacing-lg); }
+.creator-bio { font-size: 0.875rem; color: var(--color-gray-text); line-height: 1.7; margin-bottom: var(--spacing-md); }
+.social-links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: var(--spacing-lg); }
+.social-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-gray-text);
+  transition: all var(--transition);
+}
+.social-btn:hover { border-color: #555; color: var(--color-white-text); background: var(--color-dark-accent); }
+
+/* ═══════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════ */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-2xl); }
+.contact-form { background: var(--color-dark-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-2xl); }
+.form-group { margin-bottom: var(--spacing-xl); }
+.form-label { display: block; font-size: 0.8125rem; font-weight: 500; margin-bottom: var(--spacing-sm); color: var(--color-gray-text); }
+.form-input, .form-textarea {
+  width: 100%; background: var(--color-dark-background);
+  border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+  padding: 10px 14px; font-family: var(--font-dm-sans); font-size: 0.875rem;
+  color: var(--color-white-text); transition: border-color var(--transition);
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus { border-color: #555; }
+.form-textarea { resize: vertical; min-height: 120px; }
+.form-error { font-size: 0.75rem; color: #e57373; margin-top: 4px; display: none; }
+.form-input.error, .form-textarea.error { border-color: rgba(244,67,54,0.6); }
+.form-input.error + .form-error, .form-textarea.error + .form-error { display: block; }
+.form-success { background: rgba(76,175,80,0.1); border: 1px solid rgba(76,175,80,0.3); border-radius: var(--radius-sm); padding: var(--spacing-lg); margin-top: var(--spacing-lg); font-size: 0.875rem; color: #81c784; display: none; }
+.form-success.show { display: block; }
+.contact-info-card { background: var(--color-dark-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--spacing-2xl); }
+.contact-info-item { display: flex; align-items: flex-start; gap: var(--spacing-md); padding: var(--spacing-lg) 0; border-bottom: 1px solid var(--color-border); }
+.contact-info-item:last-child { border-bottom: none; }
+.contact-info-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.contact-info-label { font-size: 0.75rem; color: var(--color-medium-gray); margin-bottom: 3px; }
+.contact-info-value { font-size: 0.875rem; }
+
+/* ═══════════════════════════════════════
+   CHEAT SHEET MODAL
+═══════════════════════════════════════ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  align-items: flex-start; justify-content: center; padding: 48px 24px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  width: 100%; max-width: 640px;
+  background: var(--color-dark-secondary); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.modal-header { padding: var(--spacing-xl) var(--spacing-2xl); border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-size: 1rem; font-weight: 700; }
+.modal-close { color: var(--color-medium-gray); cursor: pointer; font-size: 1.1rem; background: none; border: none; transition: color var(--transition); }
+.modal-close:hover { color: var(--color-white-text); }
+.modal-body { padding: var(--spacing-2xl); }
+.cheat-group { margin-bottom: var(--spacing-2xl); }
+.cheat-group-title { font-size: 0.75rem; font-weight: 700; color: var(--color-medium-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: var(--spacing-md); }
+.cheat-item { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-lg); padding: 9px 0; border-bottom: 1px solid var(--color-border); }
+.cheat-item:last-child { border-bottom: none; }
+.cheat-desc { font-size: 0.8125rem; color: var(--color-gray-text); flex-shrink: 0; }
+.cheat-code { font-family: var(--font-code); font-size: 0.78rem; color: var(--color-white-text); text-align: right; }
+
+/* ═══════════════════════════════════════
+   CERT MODAL
+═══════════════════════════════════════ */
+#certModal .modal-box { max-width: 480px; }
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 32px; right: 24px; z-index: 5000;
+  padding: 12px 20px; border-radius: var(--radius-sm);
+  background: var(--color-dark-secondary); border: 1px solid var(--color-border);
+  font-size: 0.84rem; color: var(--color-white-text);
+  transform: translateY(80px); opacity: 0; transition: all 0.25s ease;
+  pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { border-color: rgba(76,175,80,0.5); }
+.toast.error   { border-color: rgba(244,67,54,0.5); }
+
+/* ═══════════════════════════════════════
+   REVEAL ANIMATION
+═══════════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(16px); transition: all 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .course-layout { grid-template-columns: 1fr; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .creator-card { flex-direction: column; }
+  .course-sidebar { order: -1; }
+}
+@media (max-width: 700px) {
+  .nav-links { display: none; }
+  .nav-actions .btn { display: none; }
+  .hamburger { display: flex; }
+  .hero-stats { gap: var(--spacing-xl); }
+  .course-header-block { padding: var(--spacing-2xl); }
+  .res-panel.active { grid-template-columns: 1fr; }
+}
+@media (max-width: 500px) {
+  .cert-grid { grid-template-columns: 1fr; }
+  .courses-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')" style="cursor:pointer">
+      curiocode <div class="nav-logo-dot"></div>
+    </div>
+    <div class="nav-links">
+      <a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a>
+      <a href="#" onclick="showPage('courses')" id="nav-courses">Courses</a>
+      <a href="#" onclick="showPage('path')" id="nav-path">Roadmap</a>
+      <a href="#" onclick="showPage('resources')" id="nav-resources">Resources</a>
+      <a href="#" onclick="showPage('dashboard')" id="nav-dashboard">Dashboard</a>
+      <a href="#" onclick="showPage('about')" id="nav-about">About</a>
+      <a href="#" onclick="showPage('contact')" id="nav-contact">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="btn btn-primary btn-sm" onclick="showPage('courses')">Start Learning</button>
+      <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="showPage('home'); toggleMenu()">Home</a>
+  <a href="#" onclick="showPage('courses'); toggleMenu()">Courses</a>
+  <a href="#" onclick="showPage('path'); toggleMenu()">Roadmap</a>
+  <a href="#" onclick="showPage('resources'); toggleMenu()">Resources</a>
+  <a href="#" onclick="showPage('dashboard'); toggleMenu()">Dashboard</a>
+  <a href="#" onclick="showPage('certificates'); toggleMenu()">Certificates</a>
+  <a href="#" onclick="showPage('about'); toggleMenu()">About</a>
+  <a href="#" onclick="showPage('contact'); toggleMenu()">Contact</a>
+</div>
+
+<!-- ═══ PAGE: HOME ═══ -->
+<div id="page-home" class="page-view active">
+  <section id="page-home-hero">
+    <div class="hero-gradient"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <div class="hero-eyebrow-dot"></div>
+          Free · No account required · Open to everyone
+        </div>
+        <h1 class="hero-title">
+          The coding education<br/>
+          you actually <span class="outlined">deserve</span>
+        </h1>
+        <p class="hero-sub">
+          Deep, structured lessons in HTML, CSS, JavaScript, and Python. Not bite-sized tips — real understanding, from first principles to advanced topics.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="showPage('courses')">Start Learning</button>
+          <button class="btn btn-outline" onclick="showPage('path')">View Roadmap</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-number" id="stat1">0</div><div class="hero-stat-label">Lessons</div></div>
+          <div class="hero-stat"><div class="hero-stat-number" id="stat2">0</div><div class="hero-stat-label">Courses</div></div>
+          <div class="hero-stat"><div class="hero-stat-number" id="stat3">0</div><div class="hero-stat-label">Projects</div></div>
+          <div class="hero-stat"><div class="hero-stat-number">100%</div><div class="hero-stat-label">Free</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why curiocode -->
+  <section class="section" style="border-top:1px solid var(--color-border)">
+    <div class="container">
+      <div class="section-label-row">
+        <span class="section-num">01</span>
+        <h2 class="section-heading">Why curiocode is different</h2>
+      </div>
+      <p class="body-text" style="max-width:560px;margin-bottom:var(--spacing-3xl)">Most free courses are shallow. curiocode explains the <em>why</em> behind everything — so you don't just copy code, you actually understand it.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:var(--spacing-lg)">
+        <div class="resource-card reveal">
+          <div class="resource-icon">📖</div>
+          <div class="resource-title">Deep Explanations</div>
+          <div class="resource-desc">Every module covers concepts thoroughly with examples, analogies, and the reasoning behind each decision.</div>
+        </div>
+        <div class="resource-card reveal reveal-delay-1">
+          <div class="resource-icon">⚡</div>
+          <div class="resource-title">Real Code Examples</div>
+          <div class="resource-desc">Every lesson includes syntax-highlighted code blocks you can study, copy, and build on immediately.</div>
+        </div>
+        <div class="resource-card reveal reveal-delay-2">
+          <div class="resource-icon">🧠</div>
+          <div class="resource-title">Knowledge Checks</div>
+          <div class="resource-desc">Each course ends with a quiz and each lesson has a challenge to make sure the concept actually sticks.</div>
+        </div>
+        <div class="resource-card reveal reveal-delay-3">
+          <div class="resource-icon">🗺️</div>
+          <div class="resource-title">Clear Progression</div>
+          <div class="resource-desc">Four courses in a logical order — HTML → CSS → JavaScript → Python — each building on the last.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses preview -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="section-label-row">
+        <span class="section-num">02</span>
+        <h2 class="section-heading">Four courses. One complete path.</h2>
+      </div>
+      <p class="body-text" style="max-width:520px;margin-bottom:var(--spacing-2xl)">Start with HTML and work your way to Python. Each course builds on the last.</p>
+      <div class="courses-grid">
+        <div class="course-card reveal" onclick="showCourse('html')">
+          <div class="course-banner html-banner"><div class="course-banner-code">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello World!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</div></div>
+          <div class="course-body">
+            <span class="tag tag-html">Beginner · Step 1</span>
+            <div class="course-title">HTML Fundamentals</div>
+            <div class="course-desc">The structure of every website. Learn tags, forms, tables, semantic HTML, and accessibility from scratch.</div>
+            <div class="course-meta"><span>10 Modules</span><span>8–10 hrs</span><span>Free Certificate</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%;background:linear-gradient(90deg,#e44d26,#f16529)"></div></div>
+            <button class="course-btn" style="color:var(--html-color);border-color:rgba(228,77,38,0.35)">Open Course →</button>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-1" onclick="showCourse('css')">
+          <div class="course-banner css-banner"><div class="course-banner-code">body {
+  background: #111;
+  color: white;
+}
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}</div></div>
+          <div class="course-body">
+            <span class="tag tag-css">Beginner · Step 2</span>
+            <div class="course-title">Modern CSS Mastery</div>
+            <div class="course-desc">Make pages beautiful. Flexbox, Grid, animations, transitions, and responsive design — all covered in depth.</div>
+            <div class="course-meta"><span>10 Modules</span><span>10–12 hrs</span><span>Free Certificate</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%;background:linear-gradient(90deg,#264de4,#2965f1)"></div></div>
+            <button class="course-btn" style="color:#5b80f5;border-color:rgba(38,77,228,0.35)">Open Course →</button>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-2" onclick="showCourse('js')">
+          <div class="course-banner js-banner"><div class="course-banner-code">function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+const result = greet('World');
+console.log(result);
+// → Hello, World!</div></div>
+          <div class="course-body">
+            <span class="tag tag-js">Intermediate · Step 3</span>
+            <div class="course-title">JavaScript Essentials</div>
+            <div class="course-desc">The language of the web. Variables, functions, DOM, events, async/await, and real API consumption.</div>
+            <div class="course-meta"><span>10 Modules</span><span>12–15 hrs</span><span>Free Certificate</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%;background:linear-gradient(90deg,#f0db4f,#e8c700)"></div></div>
+            <button class="course-btn" style="color:var(--js-color);border-color:rgba(240,219,79,0.35)">Open Course →</button>
+          </div>
+        </div>
+        <div class="course-card reveal reveal-delay-3" onclick="showCourse('python')">
+          <div class="course-banner py-banner"><div class="course-banner-code">class Student:
+    def __init__(self, name):
+        self.name = name
+    def greet(self):
+        print(f"Hi, I'm {self.name}")
+
+s = Student("Subhaan")
+s.greet()</div></div>
+          <div class="course-body">
+            <span class="tag tag-py">Intermediate · Step 4</span>
+            <div class="course-title">Python from Scratch</div>
+            <div class="course-desc">The world's most versatile language. Variables, loops, OOP, file handling, and real terminal projects.</div>
+            <div class="course-meta"><span>10 Modules</span><span>12–15 hrs</span><span>Free Certificate</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="width:0%;background:linear-gradient(90deg,#3776ab,#ffd43b)"></div></div>
+            <button class="course-btn" style="color:#6ba3c9;border-color:rgba(55,118,171,0.35)">Open Course →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ PAGE: COURSES ═══ -->
+<div id="page-courses" class="page-view">
+  <div style="padding:calc(var(--nav-height) + 48px) 0 96px">
+    <div class="container">
+      <div class="section-label-row"><span class="section-num">—</span><h1 class="section-heading">All Courses</h1></div>
+      <p class="body-text" style="max-width:520px;margin-bottom:var(--spacing-3xl)">Four languages, taught deeply. Click any course to see all modules and start learning.</p>
+      <div class="courses-grid">
+        <div class="course-card" onclick="showCourse('html')">
+          <div class="course-banner html-banner"><div class="course-banner-code">&lt;section&gt;
+  &lt;h2&gt;About Me&lt;/h2&gt;
+  &lt;p&gt;Web developer.&lt;/p&gt;
+  &lt;a href="work.html"&gt;
+    My Work
+  &lt;/a&gt;
+&lt;/section&gt;</div></div>
+          <div class="course-body">
+            <span class="tag tag-html">Beginner · Step 1</span>
+            <div class="course-title">HTML Fundamentals</div>
+            <div class="course-desc">Master the skeleton of every website. Learn tags, attributes, forms, tables, and semantic HTML.</div>
+            <div class="course-meta"><span>10 Modules</span><span>8–10 hrs</span><span>Free Cert</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="background:linear-gradient(90deg,#e44d26,#f16529)"></div></div>
+            <button class="course-btn" style="color:var(--html-color);border-color:rgba(228,77,38,0.35)">Start HTML Course →</button>
+          </div>
+        </div>
+        <div class="course-card" onclick="showCourse('css')">
+          <div class="course-banner css-banner"><div class="course-banner-code">.container {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit,
+    minmax(280px, 1fr));
+  gap: 24px;
+}</div></div>
+          <div class="course-body">
+            <span class="tag tag-css">Beginner · Step 2</span>
+            <div class="course-title">Modern CSS Mastery</div>
+            <div class="course-desc">Style everything. Flexbox, Grid, animations, transitions, and responsive design — all covered.</div>
+            <div class="course-meta"><span>10 Modules</span><span>10–12 hrs</span><span>Free Cert</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="background:linear-gradient(90deg,#264de4,#2965f1)"></div></div>
+            <button class="course-btn" style="color:#5b80f5;border-color:rgba(38,77,228,0.35)">Start CSS Course →</button>
+          </div>
+        </div>
+        <div class="course-card" onclick="showCourse('js')">
+          <div class="course-banner js-banner"><div class="course-banner-code">fetch('/api/data')
+  .then(r => r.json())
+  .then(data => {
+    console.log(data);
+  })
+  .catch(err =>
+    console.error(err));</div></div>
+          <div class="course-body">
+            <span class="tag tag-js">Intermediate · Step 3</span>
+            <div class="course-title">JavaScript Essentials</div>
+            <div class="course-desc">Programming language of the web. Variables, functions, DOM, events, and async operations.</div>
+            <div class="course-meta"><span>10 Modules</span><span>12–15 hrs</span><span>Free Cert</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="background:linear-gradient(90deg,#f0db4f,#e8c700)"></div></div>
+            <button class="course-btn" style="color:var(--js-color);border-color:rgba(240,219,79,0.35)">Start JS Course →</button>
+          </div>
+        </div>
+        <div class="course-card" onclick="showCourse('python')">
+          <div class="course-banner py-banner"><div class="course-banner-code">def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        print(a, end=" ")
+        a, b = b, a + b
+
+fibonacci(8)
+# 0 1 1 2 3 5 8 13</div></div>
+          <div class="course-body">
+            <span class="tag tag-py">Intermediate · Step 4</span>
+            <div class="course-title">Python from Scratch</div>
+            <div class="course-desc">Learn the world's most versatile language. Variables, loops, OOP, file handling, and real projects.</div>
+            <div class="course-meta"><span>10 Modules</span><span>12–15 hrs</span><span>Free Cert</span></div>
+            <div class="course-progress-bar"><div class="course-progress-fill" style="background:linear-gradient(90deg,#3776ab,#ffd43b)"></div></div>
+            <button class="course-btn" style="color:#6ba3c9;border-color:rgba(55,118,171,0.35)">Start Python Course →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ COURSE DETAIL PAGES ═══ -->
+<div id="page-course-detail" class="page-view">
+  <div class="course-detail-wrap">
+    <div class="container">
+      <button class="back-btn" onclick="showPage('courses')">← Back to Courses</button>
+
+      <!-- HTML COURSE -->
+      <div id="course-html" class="course-page active">
+        <div class="course-header-block">
+          <span class="tag tag-html">HTML · Beginner</span>
+          <div class="course-header-title">HTML Fundamentals</div>
+          <div class="course-header-desc">Learn the building blocks of every website. By the end, you'll create fully structured, accessible web pages from scratch — and understand exactly why every element exists.</div>
+          <div class="course-stats-row">
+            <div><div class="course-stat-val">10</div><div class="course-stat-lbl">Modules</div></div>
+            <div><div class="course-stat-val">8–10h</div><div class="course-stat-lbl">Duration</div></div>
+            <div><div class="course-stat-val">3</div><div class="course-stat-lbl">Projects</div></div>
+            <div><div class="course-stat-val">Free</div><div class="course-stat-lbl">Certificate</div></div>
+          </div>
+        </div>
+        <div class="course-layout">
+          <div class="course-main">
+            <p class="label-text" style="margin-bottom:var(--spacing-lg)">Course Modules — click any to read the full lesson</p>
+            <div class="module-list">
+              <div class="module-item" onclick="openLesson('html','intro')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">01</div><div class="module-info"><div class="module-title">Introduction to HTML</div><div class="module-meta">What is HTML · History · Role in Web Dev · Browser rendering</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','structure')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">02</div><div class="module-info"><div class="module-title">HTML Document Structure</div><div class="module-meta">DOCTYPE · html · head · body · meta tags · charset</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','text')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">03</div><div class="module-info"><div class="module-title">Headings and Paragraphs</div><div class="module-meta">h1–h6 · p · br · hr · strong · em · blockquote</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','links')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">04</div><div class="module-info"><div class="module-title">Links and Navigation</div><div class="module-meta">anchor tags · href · target · rel · nav menus · mailto</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','images')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">05</div><div class="module-info"><div class="module-title">Images and Media</div><div class="module-meta">img · src · alt · width · height · figure · video · audio</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','lists')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">06</div><div class="module-info"><div class="module-title">Lists</div><div class="module-meta">ul · ol · li · nested lists · dl · dt · dd</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','tables')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">07</div><div class="module-info"><div class="module-title">Tables</div><div class="module-meta">table · tr · th · td · colspan · rowspan · caption · scope</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','forms')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">08</div><div class="module-info"><div class="module-title">Forms and Inputs</div><div class="module-meta">form · input types · label · select · textarea · validation</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','semantic')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">09</div><div class="module-info"><div class="module-title">Semantic HTML</div><div class="module-meta">header · main · article · section · footer · nav · aside</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('html','a11y')"><div class="module-num" style="background:rgba(228,77,38,0.12);color:#e44d26">10</div><div class="module-info"><div class="module-title">Accessibility Basics</div><div class="module-meta">ARIA roles · alt text · keyboard nav · screen readers · WCAG</div></div><span class="module-arrow">→</span></div>
+            </div>
+            <div class="quiz-section">
+              <div class="quiz-title">Knowledge Check — HTML</div>
+              <div class="quiz-question">What does HTML stand for?</div>
+              <div class="quiz-options" id="html-opts">
+                <button class="quiz-option" onclick="checkAnswer(this,'html','wrong')">Hyper Transfer Markup Language</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'html','correct')">HyperText Markup Language</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'html','wrong')">High Text Meta Language</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'html','wrong')">Hyper Technical Markup Logic</button>
+              </div>
+              <div id="html-feedback" class="quiz-feedback"></div>
+            </div>
+          </div>
+          <div class="course-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Projects</div>
+              <div class="sidebar-item">🌐 <div><div style="font-weight:600;font-size:0.84rem">Personal Portfolio Page</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Full multi-section HTML page</div></div></div>
+              <div class="sidebar-item">📋 <div><div style="font-weight:600;font-size:0.84rem">HTML Form with Validation</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Contact form with all input types</div></div></div>
+              <div class="sidebar-item">📄 <div><div style="font-weight:600;font-size:0.84rem">Semantic Blog Layout</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Article page with proper structure</div></div></div>
+              <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:var(--spacing-lg)" onclick="showCert('html')">Claim Certificate</button>
+            </div>
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Interview Questions</div>
+              <div class="sidebar-item" style="flex-direction:column;gap:4px;display:block;padding:10px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">What is the difference between id and class?</div>
+              <div class="sidebar-item" style="flex-direction:column;gap:4px;display:block;padding:10px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">What are semantic elements and why do they matter?</div>
+              <div class="sidebar-item" style="flex-direction:column;gap:4px;display:block;padding:10px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">What is the purpose of the alt attribute on images?</div>
+              <div class="sidebar-item" style="flex-direction:column;gap:4px;display:block;padding:10px 0;font-size:0.8125rem;color:var(--color-gray-text)">Explain the difference between inline and block elements.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS COURSE -->
+      <div id="course-css" class="course-page">
+        <div class="course-header-block">
+          <span class="tag tag-css">CSS · Beginner</span>
+          <div class="course-header-title">Modern CSS Mastery</div>
+          <div class="course-header-desc">Make your web pages look professional and beautiful. This course goes deep on every visual tool CSS offers — including modern Flexbox and Grid layouts, animations, and responsive design.</div>
+          <div class="course-stats-row">
+            <div><div class="course-stat-val">10</div><div class="course-stat-lbl">Modules</div></div>
+            <div><div class="course-stat-val">10–12h</div><div class="course-stat-lbl">Duration</div></div>
+            <div><div class="course-stat-val">3</div><div class="course-stat-lbl">Projects</div></div>
+            <div><div class="course-stat-val">Free</div><div class="course-stat-lbl">Certificate</div></div>
+          </div>
+        </div>
+        <div class="course-layout">
+          <div class="course-main">
+            <p class="label-text" style="margin-bottom:var(--spacing-lg)">Course Modules — click any to read the full lesson</p>
+            <div class="module-list">
+              <div class="module-item" onclick="openLesson('css','intro')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">01</div><div class="module-info"><div class="module-title">Introduction to CSS</div><div class="module-meta">What is CSS · Syntax · Selectors · How the cascade works</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','selectors')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">02</div><div class="module-info"><div class="module-title">Selectors and Specificity</div><div class="module-meta">class · id · attribute · pseudo-classes · pseudo-elements · specificity rules</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','box')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">03</div><div class="module-info"><div class="module-title">The Box Model</div><div class="module-meta">margin · border · padding · content · box-sizing · display</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','typography')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">04</div><div class="module-info"><div class="module-title">Typography and Colors</div><div class="module-meta">font properties · Google Fonts · color formats · custom properties</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','flexbox')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">05</div><div class="module-info"><div class="module-title">Flexbox Layout</div><div class="module-meta">flex container · flex items · justify-content · align-items · gap</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','grid')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">06</div><div class="module-info"><div class="module-title">CSS Grid Layout</div><div class="module-meta">grid-template-columns · grid-template-rows · areas · auto-fit</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','positioning')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">07</div><div class="module-info"><div class="module-title">Positioning and Z-index</div><div class="module-meta">static · relative · absolute · fixed · sticky · z-index · stacking</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','responsive')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">08</div><div class="module-info"><div class="module-title">Responsive Design</div><div class="module-meta">media queries · breakpoints · mobile-first · viewport units · clamp()</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','animations')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">09</div><div class="module-info"><div class="module-title">Transitions and Animations</div><div class="module-meta">transition · @keyframes · animation · transform · hover effects</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('css','variables')"><div class="module-num" style="background:rgba(38,77,228,0.12);color:#5b80f5">10</div><div class="module-info"><div class="module-title">CSS Custom Properties</div><div class="module-meta">--variables · var() · theming · :root · dark mode patterns</div></div><span class="module-arrow">→</span></div>
+            </div>
+            <div class="quiz-section">
+              <div class="quiz-title">Knowledge Check — CSS</div>
+              <div class="quiz-question">Which CSS property controls the space between a border and the element's content?</div>
+              <div class="quiz-options" id="css-opts">
+                <button class="quiz-option" onclick="checkAnswer(this,'css','wrong')">margin</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'css','correct')">padding</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'css','wrong')">spacing</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'css','wrong')">gap</button>
+              </div>
+              <div id="css-feedback" class="quiz-feedback"></div>
+            </div>
+          </div>
+          <div class="course-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Projects</div>
+              <div class="sidebar-item">🎨 <div><div style="font-weight:600;font-size:0.84rem">Responsive Landing Page</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Flexbox + media queries</div></div></div>
+              <div class="sidebar-item">🃏 <div><div style="font-weight:600;font-size:0.84rem">Animated Card Grid</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">CSS Grid + hover effects</div></div></div>
+              <div class="sidebar-item">🌙 <div><div style="font-weight:600;font-size:0.84rem">Dark/Light Mode Theme</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Custom properties + JS toggle</div></div></div>
+              <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:var(--spacing-lg)" onclick="showCert('css')">Claim Certificate</button>
+            </div>
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Common Mistakes</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">Not setting box-sizing: border-box globally</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">Overusing absolute positioning instead of Flexbox</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">Ignoring specificity — styling doesn't apply</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;font-size:0.8125rem;color:var(--color-gray-text)">Desktop-first design breaks on mobile</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JS COURSE -->
+      <div id="course-js" class="course-page">
+        <div class="course-header-block">
+          <span class="tag tag-js">JavaScript · Intermediate</span>
+          <div class="course-header-title">JavaScript Essentials</div>
+          <div class="course-header-desc">Bring your pages to life. This course teaches real JavaScript — not just syntax, but how the language actually works, including the event loop, closures, the DOM, and async programming with APIs.</div>
+          <div class="course-stats-row">
+            <div><div class="course-stat-val">10</div><div class="course-stat-lbl">Modules</div></div>
+            <div><div class="course-stat-val">12–15h</div><div class="course-stat-lbl">Duration</div></div>
+            <div><div class="course-stat-val">3</div><div class="course-stat-lbl">Projects</div></div>
+            <div><div class="course-stat-val">Free</div><div class="course-stat-lbl">Certificate</div></div>
+          </div>
+        </div>
+        <div class="course-layout">
+          <div class="course-main">
+            <p class="label-text" style="margin-bottom:var(--spacing-lg)">Course Modules — click any to read the full lesson</p>
+            <div class="module-list">
+              <div class="module-item" onclick="openLesson('js','intro')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">01</div><div class="module-info"><div class="module-title">Introduction to JavaScript</div><div class="module-meta">What JS is · How browsers run it · console.log · script tag</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','variables')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">02</div><div class="module-info"><div class="module-title">Variables and Data Types</div><div class="module-meta">var · let · const · string · number · boolean · null · undefined</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','operators')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">03</div><div class="module-info"><div class="module-title">Operators and Expressions</div><div class="module-meta">arithmetic · comparison · logical · ternary · type coercion · == vs ===</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','functions')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">04</div><div class="module-info"><div class="module-title">Functions</div><div class="module-meta">declarations · expressions · arrow functions · closures · scope · hoisting</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','arrays')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">05</div><div class="module-info"><div class="module-title">Arrays and Objects</div><div class="module-meta">map · filter · reduce · spread · destructuring · object methods</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','dom')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">06</div><div class="module-info"><div class="module-title">The DOM</div><div class="module-meta">querySelector · createElement · innerHTML · classList · attributes</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','events')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">07</div><div class="module-info"><div class="module-title">Events and Event Listeners</div><div class="module-meta">addEventListener · event object · bubbling · delegation · forms</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','control')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">08</div><div class="module-info"><div class="module-title">Control Flow</div><div class="module-meta">if/else · switch · for · while · forEach · break · continue</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','async')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">09</div><div class="module-info"><div class="module-title">Async JavaScript</div><div class="module-meta">Promises · async/await · then/catch · event loop · microtasks</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('js','fetch')"><div class="module-num" style="background:rgba(240,219,79,0.1);color:#c9a800">10</div><div class="module-info"><div class="module-title">Fetch API and REST</div><div class="module-meta">fetch() · JSON · GET/POST · error handling · rendering API data</div></div><span class="module-arrow">→</span></div>
+            </div>
+            <div class="quiz-section">
+              <div class="quiz-title">Knowledge Check — JavaScript</div>
+              <div class="quiz-question">Which keyword creates a variable that cannot be reassigned?</div>
+              <div class="quiz-options" id="js-opts">
+                <button class="quiz-option" onclick="checkAnswer(this,'js','wrong')">var</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'js','wrong')">let</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'js','correct')">const</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'js','wrong')">fixed</button>
+              </div>
+              <div id="js-feedback" class="quiz-feedback"></div>
+            </div>
+          </div>
+          <div class="course-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Projects</div>
+              <div class="sidebar-item">🔢 <div><div style="font-weight:600;font-size:0.84rem">Calculator</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Fully functional JS calculator</div></div></div>
+              <div class="sidebar-item">✅ <div><div style="font-weight:600;font-size:0.84rem">To-Do App</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Task manager with localStorage</div></div></div>
+              <div class="sidebar-item">❓ <div><div style="font-weight:600;font-size:0.84rem">Quiz Application</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Timed quiz with scoring</div></div></div>
+              <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:var(--spacing-lg)" onclick="showCert('js')">Claim Certificate</button>
+            </div>
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Interview Questions</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">What is the difference between == and ===?</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">Explain closure in JavaScript.</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">What is the event loop?</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;font-size:0.8125rem;color:var(--color-gray-text)">What is a Promise and how does it work?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PYTHON COURSE -->
+      <div id="course-python" class="course-page">
+        <div class="course-header-block">
+          <span class="tag tag-py">Python · Intermediate</span>
+          <div class="course-header-title">Python from Scratch</div>
+          <div class="course-header-desc">One of the world's most popular and beginner-friendly languages. This course teaches Python in depth — not just syntax, but how to think in Python — from first print statement to Object-Oriented Programming.</div>
+          <div class="course-stats-row">
+            <div><div class="course-stat-val">10</div><div class="course-stat-lbl">Modules</div></div>
+            <div><div class="course-stat-val">12–15h</div><div class="course-stat-lbl">Duration</div></div>
+            <div><div class="course-stat-val">3</div><div class="course-stat-lbl">Projects</div></div>
+            <div><div class="course-stat-val">Free</div><div class="course-stat-lbl">Certificate</div></div>
+          </div>
+        </div>
+        <div class="course-layout">
+          <div class="course-main">
+            <p class="label-text" style="margin-bottom:var(--spacing-lg)">Course Modules — click any to read the full lesson</p>
+            <div class="module-list">
+              <div class="module-item" onclick="openLesson('python','intro')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">01</div><div class="module-info"><div class="module-title">Python Introduction</div><div class="module-meta">What is Python · Installation · print() · IDLE/VS Code · indentation</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','variables')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">02</div><div class="module-info"><div class="module-title">Variables and Data Types</div><div class="module-meta">int · float · str · bool · dynamic typing · type() · naming rules</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','strings')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">03</div><div class="module-info"><div class="module-title">Strings and Input</div><div class="module-meta">f-strings · methods · slicing · input() · type conversion · format()</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','control')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">04</div><div class="module-info"><div class="module-title">Control Flow</div><div class="module-meta">if · elif · else · comparison operators · logical operators · nested conditions</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','loops')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">05</div><div class="module-info"><div class="module-title">Loops</div><div class="module-meta">for · while · break · continue · range() · enumerate() · list comprehension</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','functions')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">06</div><div class="module-info"><div class="module-title">Functions</div><div class="module-meta">def · parameters · return · default args · *args · **kwargs · lambda</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','lists')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">07</div><div class="module-info"><div class="module-title">Lists and Tuples</div><div class="module-meta">indexing · slicing · methods · list comprehension · tuples · unpacking</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','dicts')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">08</div><div class="module-info"><div class="module-title">Dictionaries and Sets</div><div class="module-meta">key-value pairs · methods · nested dicts · dict comprehension · sets</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','files')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">09</div><div class="module-info"><div class="module-title">File Handling</div><div class="module-meta">open() · read · write · append · with statement · error handling</div></div><span class="module-arrow">→</span></div>
+              <div class="module-item" onclick="openLesson('python','oop')"><div class="module-num" style="background:rgba(55,118,171,0.12);color:#6ba3c9">10</div><div class="module-info"><div class="module-title">Object-Oriented Programming</div><div class="module-meta">class · __init__ · self · methods · inheritance · polymorphism · encapsulation</div></div><span class="module-arrow">→</span></div>
+            </div>
+            <div class="quiz-section">
+              <div class="quiz-title">Knowledge Check — Python</div>
+              <div class="quiz-question">Which of the following correctly defines a Python function?</div>
+              <div class="quiz-options" id="py-opts">
+                <button class="quiz-option" onclick="checkAnswer(this,'py','wrong')">function greet():</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'py','wrong')">func greet():</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'py','correct')">def greet():</button>
+                <button class="quiz-option" onclick="checkAnswer(this,'py','wrong')">define greet():</button>
+              </div>
+              <div id="py-feedback" class="quiz-feedback"></div>
+            </div>
+          </div>
+          <div class="course-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Projects</div>
+              <div class="sidebar-item">🔢 <div><div style="font-weight:600;font-size:0.84rem">CLI Calculator</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Command-line Python calculator</div></div></div>
+              <div class="sidebar-item">🎓 <div><div style="font-weight:600;font-size:0.84rem">Student Records System</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">CRUD system with file storage</div></div></div>
+              <div class="sidebar-item">💰 <div><div style="font-weight:600;font-size:0.84rem">Expense Tracker</div><div style="font-size:0.75rem;color:var(--color-medium-gray);margin-top:2px">Track and categorize expenses</div></div></div>
+              <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;margin-top:var(--spacing-lg)" onclick="showCert('python')">Claim Certificate</button>
+            </div>
+            <div class="sidebar-card">
+              <div class="sidebar-card-title">Common Mistakes</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">Using mutable default arguments in functions</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">Modifying a list while iterating over it</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;border-bottom:1px solid var(--color-border);font-size:0.8125rem;color:var(--color-gray-text)">Confusing = (assignment) with == (comparison)</div>
+              <div class="sidebar-item" style="display:block;padding:9px 0;font-size:0.8125rem;color:var(--color-gray-text)">Not closing files — use the `with` statement</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FULL LESSON OVERLAY ═══ -->
+<div id="lessonOverlay" class="lesson-overlay">
+  <div class="lesson-nav">
+    <div class="lesson-nav-left">
+      <button class="lesson-back-btn" onclick="closeLesson()">← Back to Course</button>
+      <span class="lesson-nav-title" id="lessonNavTitle"></span>
+    </div>
+    <span class="label-text" id="lessonProgress"></span>
+  </div>
+  <div class="lesson-body" id="lessonBody"></div>
+</div>
+
+<!-- ═══ PAGE: LEARNING PATH ═══ -->
+<div id="page-path" class="page-view">
+  <div style="padding:calc(var(--nav-height) + 48px) 0 96px">
+    <div class="container">
+      <div class="section-label-row"><span class="section-num">—</span><h1 class="section-heading">Learning Roadmap</h1></div>
+      <p class="body-text" style="max-width:520px;margin-bottom:var(--spacing-3xl)">A clear, step-by-step path from complete beginner to confident developer. Click each step to start that course.</p>
+      <div class="path-wrap">
+        <div class="path-item reveal">
+          <div class="path-left"><div class="path-node" onclick="showCourse('html')">📄</div><div class="path-line"></div></div>
+          <div><div class="path-step">Step 01 · Foundation</div><div class="path-title">HTML — Structure</div><div class="path-desc">Every website starts with HTML. Learn to structure content using tags, create forms and tables, and write semantic markup that browsers and search engines understand.</div><div class="path-skills"><span class="tag tag-html">Tags</span><span class="tag tag-html">Forms</span><span class="tag tag-html">Semantic</span><span class="tag tag-html">Accessibility</span></div></div>
+        </div>
+        <div class="path-item reveal reveal-delay-1">
+          <div class="path-left"><div class="path-node" onclick="showCourse('css')">🎨</div><div class="path-line"></div></div>
+          <div><div class="path-step">Step 02 · Presentation</div><div class="path-title">CSS — Style</div><div class="path-desc">Make your pages look professional. Learn Flexbox, Grid, animations, and how to make websites look great on every screen size with responsive design.</div><div class="path-skills"><span class="tag tag-css">Flexbox</span><span class="tag tag-css">Grid</span><span class="tag tag-css">Animations</span><span class="tag tag-css">Responsive</span></div></div>
+        </div>
+        <div class="path-item reveal reveal-delay-2">
+          <div class="path-left"><div class="path-node" onclick="showCourse('js')">⚡</div><div class="path-line"></div></div>
+          <div><div class="path-step">Step 03 · Interactivity</div><div class="path-title">JavaScript — Logic</div><div class="path-desc">Add brains to your pages. Learn programming concepts, DOM manipulation, event handling, and how to consume real APIs from the internet with async/await.</div><div class="path-skills"><span class="tag tag-js">Functions</span><span class="tag tag-js">DOM</span><span class="tag tag-js">Events</span><span class="tag tag-js">Async/Await</span></div></div>
+        </div>
+        <div class="path-item reveal reveal-delay-3">
+          <div class="path-left"><div class="path-node" onclick="showCourse('python')">🐍</div><div class="path-line"></div></div>
+          <div><div class="path-step">Step 04 · Backend Language</div><div class="path-title">Python — Power</div><div class="path-desc">Expand beyond the browser. Python opens doors to automation, data science, and backend development. Learn OOP and build real command-line projects.</div><div class="path-skills"><span class="tag tag-py">OOP</span><span class="tag tag-py">File I/O</span><span class="tag tag-py">Data Structures</span><span class="tag tag-py">Functions</span></div></div>
+        </div>
+        <div class="path-item reveal">
+          <div class="path-left"><div class="path-node" style="cursor:default">🛠️</div><div class="path-line"></div></div>
+          <div><div class="path-step">Step 05 · Practice</div><div class="path-title">Real Projects</div><div class="path-desc">Build real things: a portfolio website, a to-do app, a quiz game, a Python expense tracker. Projects solidify everything you've learned and build your portfolio for employers.</div><div class="path-skills"><span class="tag tag-gray">Portfolio</span><span class="tag tag-gray">To-Do App</span><span class="tag tag-gray">Calculator</span><span class="tag tag-gray">Quiz App</span></div></div>
+        </div>
+        <div class="path-item reveal reveal-delay-1">
+          <div class="path-left"><div class="path-node" style="cursor:default">🚀</div></div>
+          <div><div class="path-step">Step 06 · Beyond</div><div class="path-title">Advanced Development</div><div class="path-desc">After mastering the fundamentals, explore React, Node.js, databases, version control with Git/GitHub, and deploy your own applications to the internet.</div><div class="path-skills"><span class="tag tag-gray">React</span><span class="tag tag-gray">Node.js</span><span class="tag tag-gray">Git</span><span class="tag tag-gray">Databases</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: RESOURCES ═══ -->
+<div id="page-resources" class="page-view">
+  <div style="padding:calc(var(--nav-height) + 48px) 0 96px">
+    <div class="container">
+      <div class="section-label-row"><span class="section-num">—</span><h1 class="section-heading">Resources</h1></div>
+      <p class="body-text" style="max-width:480px;margin-bottom:var(--spacing-2xl)">Cheat sheets and reference tools to accelerate your learning.</p>
+      <div class="res-tabs">
+        <div class="res-tab active" onclick="switchTab('cheatsheets')">Cheat Sheets</div>
+        <div class="res-tab" onclick="switchTab('tools')">Useful Tools</div>
+      </div>
+      <div id="tab-cheatsheets" class="res-panel active">
+        <div class="resource-card" onclick="openCheatSheet('html')"><div class="resource-icon">📄</div><div class="resource-title">HTML Cheat Sheet</div><div class="resource-desc">All essential HTML tags, attributes, and structures in one quick reference.</div></div>
+        <div class="resource-card" onclick="openCheatSheet('css')"><div class="resource-icon">🎨</div><div class="resource-title">CSS Cheat Sheet</div><div class="resource-desc">Key CSS properties, selectors, Flexbox, and Grid at a glance.</div></div>
+        <div class="resource-card" onclick="openCheatSheet('js')"><div class="resource-icon">⚡</div><div class="resource-title">JavaScript Cheat Sheet</div><div class="resource-desc">Core JS syntax, array methods, DOM, async patterns, and more.</div></div>
+        <div class="resource-card" onclick="openCheatSheet('python')"><div class="resource-icon">🐍</div><div class="resource-title">Python Cheat Sheet</div><div class="resource-desc">Python syntax, data types, control flow, OOP, and file handling.</div></div>
+      </div>
+      <div id="tab-tools" class="res-panel">
+        <div class="resource-card"><div class="resource-icon">💻</div><div class="resource-title">VS Code</div><div class="resource-desc">The most popular code editor. Free, fast, and packed with extensions for every language.</div></div>
+        <div class="resource-card"><div class="resource-icon">🎨</div><div class="resource-title">CodePen</div><div class="resource-desc">Browser-based HTML/CSS/JS playground — perfect for experimenting and sharing snippets.</div></div>
+        <div class="resource-card"><div class="resource-icon">🐍</div><div class="resource-title">Python.org</div><div class="resource-desc">Official Python download page and documentation. Start here for your Python installation.</div></div>
+        <div class="resource-card"><div class="resource-icon">📚</div><div class="resource-title">MDN Web Docs</div><div class="resource-desc">Mozilla's comprehensive web documentation — the gold standard reference for HTML, CSS, and JS.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: DASHBOARD ═══ -->
+<div id="page-dashboard" class="page-view">
+  <div style="padding:calc(var(--nav-height) + 48px) 0 96px">
+    <div class="container">
+      <div class="section-label-row"><span class="section-num">—</span><h1 class="section-heading">Your Dashboard</h1></div>
+      <div class="dashboard-grid">
+        <div>
+          <div class="sidebar-card" style="margin-bottom:var(--spacing-lg)">
+            <div class="sidebar-card-title">Course Progress</div>
+            <div class="progress-item"><span class="progress-icon">📄</span><div class="progress-info"><div class="progress-name">HTML Fundamentals</div><div class="progress-bar"><div class="progress-fill" id="prog-html" style="background:linear-gradient(90deg,#e44d26,#f16529)"></div></div></div><span class="progress-pct" id="pct-html">80%</span></div>
+            <div class="progress-item"><span class="progress-icon">🎨</span><div class="progress-info"><div class="progress-name">Modern CSS Mastery</div><div class="progress-bar"><div class="progress-fill" id="prog-css" style="background:linear-gradient(90deg,#264de4,#2965f1)"></div></div></div><span class="progress-pct" id="pct-css">55%</span></div>
+            <div class="progress-item"><span class="progress-icon">⚡</span><div class="progress-info"><div class="progress-name">JavaScript Essentials</div><div class="progress-bar"><div class="progress-fill" id="prog-js" style="background:linear-gradient(90deg,#f0db4f,#e8c700)"></div></div></div><span class="progress-pct" id="pct-js">30%</span></div>
+            <div class="progress-item"><span class="progress-icon">🐍</span><div class="progress-info"><div class="progress-name">Python from Scratch</div><div class="progress-bar"><div class="progress-fill" id="prog-py" style="background:linear-gradient(90deg,#3776ab,#ffd43b)"></div></div></div><span class="progress-pct" id="pct-py">10%</span></div>
+          </div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Quick Actions</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="showCourse('html')">Continue HTML</button>
+              <button class="btn btn-outline btn-sm" onclick="showCourse('css')">Continue CSS</button>
+              <button class="btn btn-outline btn-sm" onclick="showPage('path')">View Roadmap</button>
+              <button class="btn btn-outline btn-sm" onclick="showPage('certificates')">Certificates</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sidebar-card">
+            <div class="sidebar-card-title">Recently Viewed</div>
+            <div class="sidebar-item" style="cursor:pointer" onclick="showCourse('html')">📄 HTML Module 8 — Forms<span style="font-size:0.7rem;color:var(--color-medium-gray);margin-left:auto;flex-shrink:0">2h ago</span></div>
+            <div class="sidebar-item" style="cursor:pointer" onclick="showCourse('css')">🎨 CSS Module 6 — Flexbox<span style="font-size:0.7rem;color:var(--color-medium-gray);margin-left:auto;flex-shrink:0">Yesterday</span></div>
+            <div class="sidebar-item" style="cursor:pointer" onclick="showCourse('js')">⚡ JS Module 4 — Functions<span style="font-size:0.7rem;color:var(--color-medium-gray);margin-left:auto;flex-shrink:0">3 days ago</span></div>
+            <div class="sidebar-item" style="cursor:pointer" onclick="showCourse('python')">🐍 Python Module 1 — Intro<span style="font-size:0.7rem;color:var(--color-medium-gray);margin-left:auto;flex-shrink:0">5 days ago</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: CERTIFICATES ═══ -->
+<div id="page-certificates" class="page-view">
+  <div style="padding:calc(var(--nav-height) + 48px) 0 96px">
+    <div class="container">
+      <div class="section-label-row"><span class="section-num">—</span><h1 class="section-heading">Your Certificates</h1></div>
+      <p class="body-text" style="max-width:480px;margin-bottom:var(--spacing-3xl)">Complete any course to earn a professional certificate you can share with employers and on your portfolio.</p>
+      <div class="cert-grid">
+        <div class="cert-card reveal">
+          <div style="display:flex;justify-content:space-between;margin-bottom:var(--spacing-2xl)"><span style="font-size:0.875rem;font-weight:700">curiocode</span><span style="font-size:1.1rem">🏆</span></div>
+          <div class="cert-certifies">This certifies that</div>
+          <div class="cert-name">Subhaan Malek</div>
+          <div class="cert-course">has successfully completed <strong>HTML Fundamentals</strong></div>
+          <div class="cert-divider"></div>
+          <div class="cert-footer">
+            <div><div class="cert-info-label">Issued</div><div class="cert-info-value">May 2026</div></div>
+            <div style="text-align:right"><div class="cert-info-label">Certificate ID</div><div class="cert-id">CC-HTML-2026-001</div></div>
+          </div>
+          <div class="cert-actions">
+            <button class="btn btn-outline btn-sm" onclick="showToast('Certificate ready to print', 'success')">Print</button>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Certificate link copied', 'success')">Share</button>
+          </div>
+        </div>
+        <div class="cert-card reveal reveal-delay-1">
+          <div style="display:flex;justify-content:space-between;margin-bottom:var(--spacing-2xl)"><span style="font-size:0.875rem;font-weight:700">curiocode</span><span style="font-size:1.1rem">🎖️</span></div>
+          <div class="cert-certifies">This certifies that</div>
+          <div class="cert-name">Subhaan Malek</div>
+          <div class="cert-course">has successfully completed <strong>Modern CSS Mastery</strong></div>
+          <div class="cert-divider"></div>
+          <div class="cert-footer">
+            <div><div class="cert-info-label">Issued</div><div class="cert-info-value">May 2026</div></div>
+            <div style="text-align:right"><div class="cert-info-label">Certificate ID</div><div class="cert-id">CC-CSS-2026-002</div></div>
+          </div>
+          <div class="cert-actions">
+            <button class="btn btn-outline btn-sm" onclick="showToast('Certificate ready to print', 'success')">Print</button>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Certificate link copied', 'success')">Share</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--color-dark-secondary);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--spacing-2xl);text-align:center;margin-top:var(--spacing-xl)">
+        <div style="font-size:1.5rem;margin-bottom:var(--spacing-md)">🔒</div>
+        <div style="font-size:0.9375rem;font-weight:700;margin-bottom:6px">2 more certificates awaiting</div>
+        <div style="font-size:0.84rem;color:var(--color-gray-text);margin-bottom:var(--spacing-xl)">Complete JavaScript and Python to unlock all four certificates.</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="showCourse('js')">Continue JavaScript</button>
+          <button class="btn btn-outline btn-sm" onclick="showCourse('python')">Start Python</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: ABOUT ═══ -->
+<div id="page-about" class="page-view">
+  <div style="padding:calc(var(--nav-height) + 48px) 0 96px">
+    <div class="container" style="max-width:800px">
+      <div class="section-label-row"><span class="section-num">—</span><h1 class="section-heading">About curiocode</h1></div>
+      <div style="background:var(--color-dark-secondary);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--spacing-2xl);margin-bottom:var(--spacing-2xl)">
+        <p class="label-text" style="margin-bottom:var(--spacing-md)">Our Mission</p>
+        <p class="about-mission">curiocode is a free educational platform built to help beginners learn programming through deep, structured courses and practical projects. We believe coding education should explain the <em>why</em> behind every concept — not just show you what to type. Every curious mind deserves the opportunity to build something meaningful with technology, regardless of financial barriers.</p>
+      </div>
+      <p class="section-heading" style="margin-bottom:var(--spacing-xl)">Meet the Creator</p>
+      <div class="creator-card">
+        <div class="creator-avatar">👨‍💻</div>
+        <div>
+          <div class="creator-name">Subhaan Malek</div>
+          <div class="creator-role">// founder & creator of curiocode</div>
+          <div class="creator-bio">A passionate Information Technology student dedicated to making coding education accessible and beginner-friendly. Currently pursuing a Diploma in IT, Subhaan built curiocode as a Contributor Personality Development project — a platform he wishes had existed when he was just starting out.</div>
+          <div class="creator-bio">"I started curiocode because I believe every student deserves access to quality coding education, regardless of where they're from or what they can afford. This platform is my contribution to the next generation of developers."</div>
+          <div class="social-links">
+            <a class="social-btn" href="https://github.com/hisubhaan" target="_blank" rel="noopener">🐙 GitHub</a>
+            <a class="social-btn" href="mailto:maleksubhaan135@gmail.com">✉️ maleksubhaan135@gmail.com</a>
+            <a class="social-btn" href="https://instagram.com/subh5an" target="_blank" rel="noopener">📸 @subh5an</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PAGE: CONTACT ═══ -->
+<div id="page-contact" class="page-view">
+  <div style="padding:calc(var(--nav-height) + 48px) 0 96px">
+    <div class="container">
+      <div class="section-label-row"><span class="section-num">—</span><h1 class="section-heading">Contact</h1></div>
+      <p class="body-text" style="max-width:480px;margin-bottom:var(--spacing-2xl)">Have a question, suggestion, or found a bug? We'd love to hear from you.</p>
+      <div class="contact-grid">
+        <div class="contact-form">
+          <p class="label-text" style="margin-bottom:var(--spacing-xl)">Send a message</p>
+          <form onsubmit="submitForm(event)" id="contactForm">
+            <div class="form-group">
+              <label class="form-label">Your Name</label>
+              <input class="form-input" id="fname" type="text" placeholder="Subhaan Malek" oninput="clearField('fname','err-name')"/>
+              <div class="form-error" id="err-name">Please enter your name.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input class="form-input" id="femail" type="email" placeholder="you@example.com" oninput="clearField('femail','err-email')"/>
+              <div class="form-error" id="err-email">Please enter a valid email.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subject</label>
+              <input class="form-input" id="fsubject" type="text" placeholder="Question about JavaScript..." oninput="clearField('fsubject','err-subject')"/>
+              <div class="form-error" id="err-subject">Please enter a subject.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message</label>
+              <textarea class="form-textarea" id="fmessage" placeholder="Your message here..." oninput="clearField('fmessage','err-message')"></textarea>
+              <div class="form-error" id="err-message">Please write a message.</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button type="submit" class="btn btn-primary">Send Message</button>
+              <button type="button" class="btn btn-outline" onclick="clearForm()">Clear</button>
+            </div>
+            <div class="form-success" id="formSuccess">✓ Message sent successfully! We'll get back to you soon.</div>
+          </form>
+        </div>
+        <div>
+          <div class="contact-info-card">
+            <p class="label-text" style="margin-bottom:var(--spacing-xl)">Direct Contact</p>
+            <div class="contact-info-item"><div class="contact-info-icon">✉️</div><div><div class="contact-info-label">Email</div><div class="contact-info-value">maleksubhaan135@gmail.com</div></div></div>
+            <div class="contact-info-item"><div class="contact-info-icon">🐙</div><div><div class="contact-info-label">GitHub</div><div class="contact-info-value">github.com/hisubhaan</div></div></div>
+            <div class="contact-info-item"><div class="contact-info-icon">📸</div><div><div class="contact-info-label">Instagram</div><div class="contact-info-value">@subh5an</div></div></div>
+          </div>
+          <div class="sidebar-card" style="margin-top:var(--spacing-lg)">
+            <div class="sidebar-card-title">Good topics to write about</div>
+            <div class="sidebar-item">💡 Lesson improvements or corrections</div>
+            <div class="sidebar-item">🐛 Bugs or broken features</div>
+            <div class="sidebar-item">📚 Course topics you'd like to see added</div>
+            <div class="sidebar-item">🤝 Collaboration or contribution ideas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHEAT SHEET MODAL ═══ -->
+<div id="cheatModal" class="modal-overlay" onclick="closeModalIfOutside(event,'cheatModal')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title" id="cheatModalTitle">Cheat Sheet</span>
+      <button class="modal-close" onclick="closeModal('cheatModal')">✕</button>
+    </div>
+    <div class="modal-body" id="cheatInner"></div>
+  </div>
+</div>
+
+<!-- ═══ CERT MODAL ═══ -->
+<div id="certModal" class="modal-overlay" onclick="closeModalIfOutside(event,'certModal')">
+  <div class="modal-box" id="certModal">
+    <div class="modal-header">
+      <span class="modal-title">Claim Certificate</span>
+      <button class="modal-close" onclick="closeModal('certModal')">✕</button>
+    </div>
+    <div class="modal-body" id="certInner"></div>
+  </div>
+</div>
+
+<!-- ═══ TOAST ═══ -->
+<div id="toast" class="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// PAGE NAVIGATION
+// ═══════════════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.classList.add('active');
+  window.scrollTo(0, 0);
+  observeReveal();
+  if (id === 'home') animateStats();
+  if (id === 'dashboard') setTimeout(animateProgress, 200);
+}
+
+function showCourse(lang) {
+  document.querySelectorAll('.course-page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('course-' + lang);
+  if (el) el.classList.add('active');
+  showPage('course-detail');
+}
+
+// ═══════════════════════════════════════
+// MOBILE MENU
+// ═══════════════════════════════════════
+function toggleMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// Scrolled nav
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ═══════════════════════════════════════
+// LESSON DATA — full, deep lesson content
+// ═══════════════════════════════════════
+const LESSONS = {
+  html: {
+    intro: {
+      title: 'Introduction to HTML',
+      course: 'HTML Fundamentals',
+      moduleNum: 1, totalModules: 10,
+      next: { key: 'structure', label: 'HTML Document Structure' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-html">HTML · Module 01</span></div>
+<h1 class="lesson-main-title">Introduction to HTML</h1>
+<p class="lesson-intro">HTML (HyperText Markup Language) is the skeleton of every webpage on the internet. It is not a programming language — it is a <strong>markup language</strong>, meaning it describes the structure and meaning of content using tags. When you visit any website, your browser downloads HTML from a server and renders it visually on your screen.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">What is HTML exactly?</div>
+<p class="lesson-text">HTML was invented by Tim Berners-Lee in 1991 as a way to share scientific documents over the internet. Since then it has evolved dramatically, but the core idea remains the same: you wrap text and content in <strong>tags</strong> to give them meaning. A tag is a keyword surrounded by angle brackets, like <code class="code-text">&lt;p&gt;</code> for paragraph or <code class="code-text">&lt;h1&gt;</code> for a top-level heading.</p>
+<p class="lesson-text">HTML is processed by the browser's <strong>rendering engine</strong>. Chrome uses Blink, Firefox uses Gecko, and Safari uses WebKit. They all read the same HTML but may render it slightly differently — which is why web developers test on multiple browsers.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">HTML, CSS, and JavaScript — the three pillars</div>
+<p class="lesson-text">Before we go further, it's important to understand that HTML is one of three technologies that make up every modern website:</p>
+<table class="concept-table">
+  <tr><th>Technology</th><th>Role</th><th>Analogy</th></tr>
+  <tr><td>HTML</td><td>Structure and content</td><td>The skeleton and organs of a building</td></tr>
+  <tr><td>CSS</td><td>Visual presentation</td><td>The paint, furniture, and decoration</td></tr>
+  <tr><td>JavaScript</td><td>Behavior and interactivity</td><td>The electricity that makes things move</td></tr>
+</table>
+<p class="lesson-text">You must learn HTML first because CSS and JavaScript have nothing to style or manipulate without HTML existing first. HTML is the foundation everything else is built on.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Your first HTML file</div>
+<p class="lesson-text">An HTML file is a plain text file saved with the <code class="code-text">.html</code> extension. You can create one in any text editor — Notepad, VS Code, even TextEdit on Mac. Once you save it and open it in a browser, the browser renders it.</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="o">&lt;!DOCTYPE html&gt;</span>
+<span class="o">&lt;html</span> <span class="a">lang</span>=<span class="s">"en"</span><span class="o">&gt;</span>
+  <span class="o">&lt;head&gt;</span>
+    <span class="o">&lt;meta</span> <span class="a">charset</span>=<span class="s">"UTF-8"</span><span class="o">&gt;</span>
+    <span class="o">&lt;title&gt;</span>My First Page<span class="o">&lt;/title&gt;</span>
+  <span class="o">&lt;/head&gt;</span>
+  <span class="o">&lt;body&gt;</span>
+    <span class="o">&lt;h1&gt;</span>Hello, World!<span class="o">&lt;/h1&gt;</span>
+    <span class="o">&lt;p&gt;</span>This is my first webpage.<span class="o">&lt;/p&gt;</span>
+  <span class="o">&lt;/body&gt;</span>
+<span class="o">&lt;/html&gt;</span></pre>
+</div>
+<p class="lesson-text">Even this tiny file has a lot going on. Let's break down each part:</p>
+<table class="concept-table">
+  <tr><th>Line</th><th>What it does</th></tr>
+  <tr><td>&lt;!DOCTYPE html&gt;</td><td>Tells the browser this is HTML5 (the current standard)</td></tr>
+  <tr><td>&lt;html lang="en"&gt;</td><td>The root element. lang="en" helps screen readers and search engines</td></tr>
+  <tr><td>&lt;head&gt;</td><td>Contains metadata — information about the page, not visible content</td></tr>
+  <tr><td>&lt;meta charset="UTF-8"&gt;</td><td>Ensures characters like é, ü, ñ display correctly</td></tr>
+  <tr><td>&lt;title&gt;</td><td>The text that appears in the browser tab</td></tr>
+  <tr><td>&lt;body&gt;</td><td>Everything inside here is what the user sees</td></tr>
+  <tr><td>&lt;h1&gt;</td><td>Top-level heading — the most important heading on the page</td></tr>
+  <tr><td>&lt;p&gt;</td><td>A paragraph of text</td></tr>
+</table>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Opening and closing tags</div>
+<p class="lesson-text">Most HTML elements have an <strong>opening tag</strong> and a <strong>closing tag</strong>. The closing tag has a forward slash before the tag name:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="o">&lt;p&gt;</span>This is a paragraph.<span class="o">&lt;/p&gt;</span>
+<span class="o">&lt;h2&gt;</span>This is a heading.<span class="o">&lt;/h2&gt;</span>
+<span class="o">&lt;strong&gt;</span>This text is bold.<span class="o">&lt;/strong&gt;</span></pre>
+</div>
+<p class="lesson-text">Some elements are <strong>self-closing</strong> — they don't wrap around content, so they only have one tag:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="o">&lt;img</span> <span class="a">src</span>=<span class="s">"photo.jpg"</span> <span class="a">alt</span>=<span class="s">"A photo"</span><span class="o">&gt;</span>
+<span class="o">&lt;br&gt;</span>           <span class="c">&lt;!-- line break --&gt;</span>
+<span class="o">&lt;hr&gt;</span>           <span class="c">&lt;!-- horizontal rule --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span><span class="o">&gt;</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Attributes</div>
+<p class="lesson-text">Attributes give extra information to elements. They are written inside the opening tag as <strong>name="value"</strong> pairs. In <code class="code-text">&lt;img src="photo.jpg" alt="A photo"&gt;</code>, both <code class="code-text">src</code> and <code class="code-text">alt</code> are attributes. Some attributes apply to almost every element (like <code class="code-text">id</code>, <code class="code-text">class</code>, <code class="code-text">style</code>), while others are specific to certain elements.</p>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-label">Tip</div>
+<div class="callout-text">Use VS Code with the "Live Server" extension installed. It will auto-refresh your browser every time you save the file, making it much faster to see your changes.</div>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-label">Common Mistake</div>
+<div class="callout-text">Forgetting to close tags. If you open a &lt;div&gt; but forget &lt;/div&gt;, the browser will try to guess where the element ends — and it may guess wrong, breaking your layout.</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">What does the &lt;title&gt; element control?</div>
+<div class="quiz-opts" id="q-html-intro-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-html-intro-fb')">The main heading visible on the page</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-html-intro-fb')">The text that appears in the browser tab</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-html-intro-fb')">The page's description in search results</button>
+</div>
+<div class="quiz-feedback" id="q-html-intro-fb">Correct! The &lt;title&gt; tag is inside &lt;head&gt; and sets the text shown in the browser tab (and bookmark name). For search result descriptions, you'd use &lt;meta name="description"&gt;.</div>
+</div>
+`
+    },
+    structure: {
+      title: 'HTML Document Structure',
+      course: 'HTML Fundamentals',
+      moduleNum: 2, totalModules: 10,
+      prev: { key: 'intro', label: 'Introduction to HTML' },
+      next: { key: 'text', label: 'Headings and Paragraphs' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-html">HTML · Module 02</span></div>
+<h1 class="lesson-main-title">HTML Document Structure</h1>
+<p class="lesson-intro">Every valid HTML page follows the same fundamental structure. Understanding this structure deeply — not just memorizing it — will help you debug problems, write better code, and understand what browsers are actually doing with your markup.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">The full boilerplate explained</div>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="o">&lt;!DOCTYPE html&gt;</span>
+<span class="o">&lt;html</span> <span class="a">lang</span>=<span class="s">"en"</span><span class="o">&gt;</span>
+
+<span class="o">&lt;head&gt;</span>
+  <span class="o">&lt;meta</span> <span class="a">charset</span>=<span class="s">"UTF-8"</span><span class="o">&gt;</span>
+  <span class="o">&lt;meta</span> <span class="a">name</span>=<span class="s">"viewport"</span> <span class="a">content</span>=<span class="s">"width=device-width, initial-scale=1.0"</span><span class="o">&gt;</span>
+  <span class="o">&lt;meta</span> <span class="a">name</span>=<span class="s">"description"</span> <span class="a">content</span>=<span class="s">"A brief description of this page"</span><span class="o">&gt;</span>
+  <span class="o">&lt;title&gt;</span>Page Title Here<span class="o">&lt;/title&gt;</span>
+  <span class="o">&lt;link</span> <span class="a">rel</span>=<span class="s">"stylesheet"</span> <span class="a">href</span>=<span class="s">"style.css"</span><span class="o">&gt;</span>
+<span class="o">&lt;/head&gt;</span>
+
+<span class="o">&lt;body&gt;</span>
+
+  <span class="c">&lt;!-- Your visible page content goes here --&gt;</span>
+  <span class="o">&lt;h1&gt;</span>Welcome<span class="o">&lt;/h1&gt;</span>
+  <span class="o">&lt;p&gt;</span>Hello, world!<span class="o">&lt;/p&gt;</span>
+
+  <span class="o">&lt;script</span> <span class="a">src</span>=<span class="s">"script.js"</span><span class="o">&gt;&lt;/script&gt;</span>
+<span class="o">&lt;/body&gt;</span>
+
+<span class="o">&lt;/html&gt;</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">The &lt;head&gt; section — invisible metadata</div>
+<p class="lesson-text">The <code class="code-text">&lt;head&gt;</code> section contains information <em>about</em> the page that doesn't display directly. Think of it as instructions given to the browser before the page renders. Here's what each meta tag does:</p>
+<table class="concept-table">
+  <tr><th>Tag / Attribute</th><th>Purpose</th></tr>
+  <tr><td>charset="UTF-8"</td><td>Encodes the page with Unicode — supports all languages and special characters</td></tr>
+  <tr><td>viewport meta</td><td>Tells mobile browsers not to zoom out and show a mini desktop — critical for responsive design</td></tr>
+  <tr><td>name="description"</td><td>The text Google shows under your page title in search results</td></tr>
+  <tr><td>&lt;title&gt;</td><td>Browser tab text and what appears when you bookmark the page</td></tr>
+  <tr><td>&lt;link rel="stylesheet"&gt;</td><td>Loads an external CSS file to style the page</td></tr>
+</table>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Why put &lt;script&gt; at the bottom of &lt;body&gt;?</div>
+<p class="lesson-text">This is a common question. When the browser reads your HTML top to bottom, if it hits a <code class="code-text">&lt;script&gt;</code> tag, it <strong>pauses</strong> and downloads/runs the script before continuing to render the page. This can make your page appear to load slowly.</p>
+<p class="lesson-text">By placing your <code class="code-text">&lt;script&gt;</code> tag just before <code class="code-text">&lt;/body&gt;</code>, you ensure the HTML renders first — giving users visible content immediately — and then JavaScript runs once everything is ready. Alternatively, you can use the <code class="code-text">defer</code> attribute: <code class="code-text">&lt;script src="script.js" defer&gt;&lt;/script&gt;</code></p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Comments in HTML</div>
+<p class="lesson-text">HTML comments are not shown to users — they're notes in your code for yourself or other developers. They're written like this:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">&lt;!-- This is a comment and will not appear on the page --&gt;</span>
+
+<span class="o">&lt;header&gt;</span>
+  <span class="c">&lt;!-- Navigation will go here later --&gt;</span>
+<span class="o">&lt;/header&gt;</span></pre>
+</div>
+</div>
+
+<div class="callout callout-info">
+<div class="callout-label">Did you know?</div>
+<div class="callout-text">Without the viewport meta tag, your responsive CSS media queries will not work correctly on mobile devices. The phone will treat your page as a ~980px wide desktop page and zoom out to show all of it. Always include it.</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">Where should you link your CSS file?</div>
+<div class="quiz-opts" id="q-html-structure-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-html-structure-fb')">At the end of the &lt;body&gt; tag</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-html-structure-fb')">Inside the &lt;head&gt; section</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-html-structure-fb')">Anywhere — it doesn't matter</button>
+</div>
+<div class="quiz-feedback" id="q-html-structure-fb">Correct! CSS goes in &lt;head&gt; so the browser loads and applies styles before rendering content — preventing the page from briefly showing unstyled HTML (called a "Flash of Unstyled Content" or FOUC).</div>
+</div>
+`
+    },
+    forms: {
+      title: 'Forms and Inputs',
+      course: 'HTML Fundamentals',
+      moduleNum: 8, totalModules: 10,
+      prev: { key: 'tables', label: 'Tables' },
+      next: { key: 'semantic', label: 'Semantic HTML' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-html">HTML · Module 08</span></div>
+<h1 class="lesson-main-title">Forms and Inputs</h1>
+<p class="lesson-intro">Forms are how users send data to a website — login, search, checkout, contact forms. Understanding HTML forms deeply means knowing not just the tags, but how they communicate with servers, how to label inputs correctly, and how to use built-in browser validation.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">The &lt;form&gt; element</div>
+<p class="lesson-text">A form wraps all your inputs. Its two most important attributes are <code class="code-text">action</code> (where to send the data) and <code class="code-text">method</code> (how to send it: GET or POST).</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="o">&lt;form</span> <span class="a">action</span>=<span class="s">"/submit"</span> <span class="a">method</span>=<span class="s">"POST"</span><span class="o">&gt;</span>
+
+  <span class="o">&lt;label</span> <span class="a">for</span>=<span class="s">"username"</span><span class="o">&gt;</span>Username<span class="o">&lt;/label&gt;</span>
+  <span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span> <span class="a">id</span>=<span class="s">"username"</span> <span class="a">name</span>=<span class="s">"username"</span> <span class="a">required</span><span class="o">&gt;</span>
+
+  <span class="o">&lt;label</span> <span class="a">for</span>=<span class="s">"email"</span><span class="o">&gt;</span>Email<span class="o">&lt;/label&gt;</span>
+  <span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"email"</span> <span class="a">id</span>=<span class="s">"email"</span> <span class="a">name</span>=<span class="s">"email"</span> <span class="a">placeholder</span>=<span class="s">"you@example.com"</span><span class="o">&gt;</span>
+
+  <span class="o">&lt;button</span> <span class="a">type</span>=<span class="s">"submit"</span><span class="o">&gt;</span>Submit<span class="o">&lt;/button&gt;</span>
+
+<span class="o">&lt;/form&gt;</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">GET vs POST</div>
+<table class="concept-table">
+  <tr><th>Method</th><th>Where data goes</th><th>Use when</th></tr>
+  <tr><td>GET</td><td>Appended to URL: /search?q=html</td><td>Searching, filtering — no sensitive data</td></tr>
+  <tr><td>POST</td><td>In the request body (hidden)</td><td>Login, signup, contact forms, payments</td></tr>
+</table>
+<p class="lesson-text">Never send passwords or sensitive info with GET — they end up in the URL, browser history, and server logs.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">All the input types</div>
+<p class="lesson-text">The <code class="code-text">type</code> attribute on an <code class="code-text">&lt;input&gt;</code> dramatically changes its behavior. Always use the most specific type — it triggers the right keyboard on mobile and enables built-in validation.</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span><span class="o">&gt;</span>          <span class="c">&lt;!-- plain text --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"email"</span><span class="o">&gt;</span>         <span class="c">&lt;!-- validates email format --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"password"</span><span class="o">&gt;</span>      <span class="c">&lt;!-- hides characters --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"number"</span><span class="o">&gt;</span>        <span class="c">&lt;!-- numeric keyboard on mobile --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"tel"</span><span class="o">&gt;</span>           <span class="c">&lt;!-- phone keyboard on mobile --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"date"</span><span class="o">&gt;</span>          <span class="c">&lt;!-- date picker --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"checkbox"</span><span class="o">&gt;</span>      <span class="c">&lt;!-- tick box --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"radio"</span><span class="o">&gt;</span>         <span class="c">&lt;!-- one of a group --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"file"</span><span class="o">&gt;</span>          <span class="c">&lt;!-- file upload --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"range"</span> <span class="a">min</span>=<span class="s">"0"</span> <span class="a">max</span>=<span class="s">"100"</span><span class="o">&gt;</span>  <span class="c">&lt;!-- slider --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"color"</span><span class="o">&gt;</span>         <span class="c">&lt;!-- color picker --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"search"</span><span class="o">&gt;</span>        <span class="c">&lt;!-- search field with clear button --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"hidden"</span><span class="o">&gt;</span>        <span class="c">&lt;!-- not shown, used to pass data --&gt;</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Labels, select, and textarea</div>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">&lt;!-- Textarea for multi-line text --&gt;</span>
+<span class="o">&lt;label</span> <span class="a">for</span>=<span class="s">"message"</span><span class="o">&gt;</span>Message<span class="o">&lt;/label&gt;</span>
+<span class="o">&lt;textarea</span> <span class="a">id</span>=<span class="s">"message"</span> <span class="a">name</span>=<span class="s">"message"</span> <span class="a">rows</span>=<span class="s">"5"</span><span class="o">&gt;&lt;/textarea&gt;</span>
+
+<span class="c">&lt;!-- Dropdown select --&gt;</span>
+<span class="o">&lt;label</span> <span class="a">for</span>=<span class="s">"course"</span><span class="o">&gt;</span>Favourite Course<span class="o">&lt;/label&gt;</span>
+<span class="o">&lt;select</span> <span class="a">id</span>=<span class="s">"course"</span> <span class="a">name</span>=<span class="s">"course"</span><span class="o">&gt;</span>
+  <span class="o">&lt;option</span> <span class="a">value</span>=<span class="s">""</span><span class="o">&gt;</span>Select one...<span class="o">&lt;/option&gt;</span>
+  <span class="o">&lt;option</span> <span class="a">value</span>=<span class="s">"html"</span><span class="o">&gt;</span>HTML<span class="o">&lt;/option&gt;</span>
+  <span class="o">&lt;option</span> <span class="a">value</span>=<span class="s">"css"</span><span class="o">&gt;</span>CSS<span class="o">&lt;/option&gt;</span>
+  <span class="o">&lt;option</span> <span class="a">value</span>=<span class="s">"js"</span><span class="o">&gt;</span>JavaScript<span class="o">&lt;/option&gt;</span>
+<span class="o">&lt;/select&gt;</span></pre>
+</div>
+<p class="lesson-text">Always connect <code class="code-text">&lt;label&gt;</code> to its input using <code class="code-text">for="id"</code>. This means clicking the label text focuses the input — a major usability and accessibility improvement.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Built-in validation attributes</div>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">HTML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span> <span class="a">required</span><span class="o">&gt;</span>               <span class="c">&lt;!-- cannot be empty --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span> <span class="a">minlength</span>=<span class="s">"3"</span> <span class="a">maxlength</span>=<span class="s">"20"</span><span class="o">&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"number"</span> <span class="a">min</span>=<span class="s">"1"</span> <span class="a">max</span>=<span class="s">"100"</span><span class="o">&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span> <span class="a">pattern</span>=<span class="s">"[A-Z]{3}"</span><span class="o">&gt;</span>     <span class="c">&lt;!-- regex pattern --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span> <span class="a">disabled</span><span class="o">&gt;</span>              <span class="c">&lt;!-- not editable --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span> <span class="a">readonly</span><span class="o">&gt;</span>             <span class="c">&lt;!-- viewable but not editable --&gt;</span>
+<span class="o">&lt;input</span> <span class="a">type</span>=<span class="s">"text"</span> <span class="a">autofocus</span><span class="o">&gt;</span>           <span class="c">&lt;!-- focused when page loads --&gt;</span></pre>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-label">Tip</div>
+<div class="callout-text">HTML form validation is a great first line of defense, but you should always validate data on the server side too. A technically savvy user can bypass HTML validation by editing the request directly.</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">What is the correct way to link a &lt;label&gt; to an &lt;input&gt;?</div>
+<div class="quiz-opts" id="q-html-forms-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-html-forms-fb')">Give them both the same class</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-html-forms-fb')">Set the label's for attribute to match the input's id</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-html-forms-fb')">Place the label directly after the input</button>
+</div>
+<div class="quiz-feedback" id="q-html-forms-fb">Correct! for="username" on the label links it to &lt;input id="username"&gt;. This makes clicking the label text activate the input — crucial for usability and accessibility.</div>
+</div>
+`
+    }
+  },
+  css: {
+    flexbox: {
+      title: 'Flexbox Layout',
+      course: 'Modern CSS Mastery',
+      moduleNum: 5, totalModules: 10,
+      prev: { key: 'typography', label: 'Typography and Colors' },
+      next: { key: 'grid', label: 'CSS Grid Layout' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-css">CSS · Module 05</span></div>
+<h1 class="lesson-main-title">Flexbox Layout</h1>
+<p class="lesson-intro">Flexbox (Flexible Box Layout) is a CSS layout model that makes it trivially easy to align, distribute, and order elements in a container — both horizontally and vertically. Before Flexbox, centering something vertically required hacks. With Flexbox, it's two lines. This module will give you a complete, working understanding of every Flexbox property.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Flex container vs flex items</div>
+<p class="lesson-text">Flexbox has two players: the <strong>container</strong> (the parent) and the <strong>items</strong> (the direct children). You activate Flexbox on the <em>container</em> with <code class="code-text">display: flex</code>. This immediately changes how all direct children are laid out.</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">.container</span> {
+  <span class="k">display</span>: <span class="n">flex</span>;    <span class="c">/* activates Flexbox */</span>
+}
+
+<span class="c">/* Now all direct children of .container are flex items */</span></pre>
+</div>
+<p class="lesson-text">By default, flex items line up in a row (left to right) and stretch to fill the container's height.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Main axis and cross axis</div>
+<p class="lesson-text">Flexbox operates along two axes. The <strong>main axis</strong> is the primary direction items flow. The <strong>cross axis</strong> is perpendicular to it. By default, the main axis is horizontal (row). You change the direction with <code class="code-text">flex-direction</code>:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">.container</span> {
+  <span class="k">display</span>: <span class="n">flex</span>;
+  <span class="k">flex-direction</span>: <span class="n">row</span>;            <span class="c">/* default — left to right */</span>
+  <span class="k">flex-direction</span>: <span class="n">row-reverse</span>;   <span class="c">/* right to left */</span>
+  <span class="k">flex-direction</span>: <span class="n">column</span>;         <span class="c">/* top to bottom (main axis is now vertical) */</span>
+  <span class="k">flex-direction</span>: <span class="n">column-reverse</span>; <span class="c">/* bottom to top */</span>
+}</pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">justify-content — align along the main axis</div>
+<p class="lesson-text">Controls how items are distributed along the <strong>main axis</strong>.</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">.container</span> {
+  <span class="k">justify-content</span>: <span class="n">flex-start</span>;    <span class="c">/* default — all items at the start */</span>
+  <span class="k">justify-content</span>: <span class="n">flex-end</span>;      <span class="c">/* all items at the end */</span>
+  <span class="k">justify-content</span>: <span class="n">center</span>;        <span class="c">/* all items centered */</span>
+  <span class="k">justify-content</span>: <span class="n">space-between</span>; <span class="c">/* first+last at edges, equal space between */</span>
+  <span class="k">justify-content</span>: <span class="n">space-around</span>;  <span class="c">/* equal space around each item */</span>
+  <span class="k">justify-content</span>: <span class="n">space-evenly</span>;  <span class="c">/* equal space between and at edges */</span>
+}</pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">align-items — align along the cross axis</div>
+<p class="lesson-text">Controls how items are aligned on the <strong>cross axis</strong> (perpendicular to the main axis).</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">.container</span> {
+  <span class="k">align-items</span>: <span class="n">stretch</span>;     <span class="c">/* default — items stretch to fill container */</span>
+  <span class="k">align-items</span>: <span class="n">flex-start</span>;  <span class="c">/* items align to the top */</span>
+  <span class="k">align-items</span>: <span class="n">flex-end</span>;    <span class="c">/* items align to the bottom */</span>
+  <span class="k">align-items</span>: <span class="n">center</span>;      <span class="c">/* items centered vertically */</span>
+  <span class="k">align-items</span>: <span class="n">baseline</span>;    <span class="c">/* items align by their text baselines */</span>
+}</pre>
+</div>
+<p class="lesson-text">The famous "perfect center" technique — centering something both horizontally and vertically — is now just:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">.container</span> {
+  <span class="k">display</span>: <span class="n">flex</span>;
+  <span class="k">justify-content</span>: <span class="n">center</span>;
+  <span class="k">align-items</span>: <span class="n">center</span>;
+}</pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">gap, flex-wrap, and flex properties</div>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">CSS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">.container</span> {
+  <span class="k">gap</span>: <span class="n">16px</span>;           <span class="c">/* space between items (row and column) */</span>
+  <span class="k">row-gap</span>: <span class="n">16px</span>;       <span class="c">/* gap only between rows */</span>
+  <span class="k">column-gap</span>: <span class="n">24px</span>;    <span class="c">/* gap only between columns */</span>
+  <span class="k">flex-wrap</span>: <span class="n">nowrap</span>;   <span class="c">/* default — items never wrap to next line */</span>
+  <span class="k">flex-wrap</span>: <span class="n">wrap</span>;     <span class="c">/* items wrap to next line when they run out of space */</span>
+}
+
+<span class="c">/* Properties on individual flex items: */</span>
+<span class="v">.item</span> {
+  <span class="k">flex-grow</span>: <span class="n">1</span>;     <span class="c">/* how much this item grows to fill space (0 = don't grow) */</span>
+  <span class="k">flex-shrink</span>: <span class="n">1</span>;   <span class="c">/* how much it shrinks if there's not enough space */</span>
+  <span class="k">flex-basis</span>: <span class="n">auto</span>; <span class="c">/* initial size before growing/shrinking */</span>
+  <span class="k">flex</span>: <span class="n">1</span>;           <span class="c">/* shorthand for flex: 1 1 0 — very commonly used */</span>
+  <span class="k">align-self</span>: <span class="n">center</span>; <span class="c">/* override the container's align-items for this item */</span>
+}</pre>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-label">Common pattern</div>
+<div class="callout-text">A navigation bar with a logo on the left and links on the right: set the nav to display:flex; justify-content:space-between; align-items:center. That's it. No floats, no tricks.</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">Which property distributes flex items along the cross axis (perpendicular to the main axis)?</div>
+<div class="quiz-opts" id="q-css-flexbox-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-css-flexbox-fb')">justify-content</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-css-flexbox-fb')">align-items</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-css-flexbox-fb')">flex-direction</button>
+</div>
+<div class="quiz-feedback" id="q-css-flexbox-fb">Correct! justify-content aligns on the main axis, align-items aligns on the cross axis. When flex-direction is row (default), the main axis is horizontal and the cross axis is vertical.</div>
+</div>
+`
+    }
+  },
+  js: {
+    functions: {
+      title: 'Functions',
+      course: 'JavaScript Essentials',
+      moduleNum: 4, totalModules: 10,
+      prev: { key: 'operators', label: 'Operators and Expressions' },
+      next: { key: 'arrays', label: 'Arrays and Objects' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-js">JavaScript · Module 04</span></div>
+<h1 class="lesson-main-title">Functions</h1>
+<p class="lesson-intro">Functions are the single most important concept in JavaScript — and in programming as a whole. They let you name and reuse blocks of code. But JavaScript functions go much deeper than other languages: they are <strong>first-class citizens</strong>, meaning they can be stored in variables, passed as arguments, and returned from other functions. Understanding this unlocks the real power of JavaScript.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Function declaration</div>
+<p class="lesson-text">The classic way to define a function. The name is required, and <strong>hoisting</strong> means you can call it before it appears in the file:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">// Function declaration</span>
+<span class="k">function</span> <span class="f">greet</span>(name) {
+  <span class="k">return</span> <span class="s">\`Hello, \${name}!\`</span>;
+}
+
+console.<span class="f">log</span>(<span class="f">greet</span>(<span class="s">"Subhaan"</span>)); <span class="c">// "Hello, Subhaan!"</span>
+
+<span class="c">// You can call it BEFORE the definition — this is hoisting</span>
+<span class="f">add</span>(<span class="n">2</span>, <span class="n">3</span>); <span class="c">// works fine</span>
+
+<span class="k">function</span> <span class="f">add</span>(a, b) {
+  <span class="k">return</span> a + b;
+}</pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Function expression</div>
+<p class="lesson-text">You can assign a function to a variable. Unlike declarations, these are <strong>not hoisted</strong> — you can only use them after the line where they're defined:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="k">const</span> multiply = <span class="k">function</span>(a, b) {
+  <span class="k">return</span> a * b;
+};
+
+console.<span class="f">log</span>(<span class="f">multiply</span>(<span class="n">4</span>, <span class="n">5</span>)); <span class="c">// 20</span>
+
+<span class="c">// This would throw a ReferenceError:</span>
+<span class="c">// multiply(4, 5); // called before assignment!</span>
+<span class="c">// const multiply = function() { ... };</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Arrow functions</div>
+<p class="lesson-text">Introduced in ES6, arrow functions are a shorter syntax for function expressions. They're very common in modern JavaScript:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">// Regular function expression:</span>
+<span class="k">const</span> square = <span class="k">function</span>(x) { <span class="k">return</span> x * x; };
+
+<span class="c">// Arrow function — same thing:</span>
+<span class="k">const</span> square = (x) => { <span class="k">return</span> x * x; };
+
+<span class="c">// Implicit return (when body is a single expression):</span>
+<span class="k">const</span> square = x => x * x;
+
+<span class="c">// Multiple parameters — always use parentheses:</span>
+<span class="k">const</span> add = (a, b) => a + b;
+
+<span class="c">// No parameters — use empty parens:</span>
+<span class="k">const</span> greet = () => <span class="s">"Hello!"</span>;
+
+console.<span class="f">log</span>(<span class="f">square</span>(<span class="n">5</span>));   <span class="c">// 25</span>
+console.<span class="f">log</span>(<span class="f">add</span>(<span class="n">3</span>, <span class="n">4</span>));  <span class="c">// 7</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Parameters vs Arguments</div>
+<p class="lesson-text"><strong>Parameters</strong> are the named variables in the function definition. <strong>Arguments</strong> are the actual values you pass in when you call it. JavaScript doesn't throw an error if you pass the wrong number of arguments — missing parameters are <code class="code-text">undefined</code>, and extras are ignored (unless you use rest parameters):</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="k">function</span> <span class="f">describe</span>(name, age) {
+  console.<span class="f">log</span>(<span class="s">\`\${name} is \${age} years old\`</span>);
+}
+
+<span class="f">describe</span>(<span class="s">"Ali"</span>);          <span class="c">// "Ali is undefined years old"</span>
+<span class="f">describe</span>(<span class="s">"Ali"</span>, <span class="n">20</span>, <span class="s">"extra"</span>); <span class="c">// "Ali is 20 years old" — extra ignored</span>
+
+<span class="c">// Default parameter values (ES6):</span>
+<span class="k">function</span> <span class="f">greet</span>(name = <span class="s">"World"</span>) {
+  <span class="k">return</span> <span class="s">\`Hello, \${name}!\`</span>;
+}
+<span class="f">greet</span>();        <span class="c">// "Hello, World!"</span>
+<span class="f">greet</span>(<span class="s">"Sara"</span>); <span class="c">// "Hello, Sara!"</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Closures</div>
+<p class="lesson-text">A <strong>closure</strong> is when a function "remembers" the variables from its surrounding scope, even after that scope has finished executing. This is one of the most powerful — and most confusing — features of JavaScript:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="k">function</span> <span class="f">makeCounter</span>() {
+  <span class="k">let</span> count = <span class="n">0</span>;  <span class="c">// this variable lives inside makeCounter</span>
+  <span class="k">return</span> <span class="k">function</span>() {
+    count++;       <span class="c">// the inner function "closes over" count</span>
+    <span class="k">return</span> count;
+  };
+}
+
+<span class="k">const</span> counter = <span class="f">makeCounter</span>();
+console.<span class="f">log</span>(<span class="f">counter</span>()); <span class="c">// 1</span>
+console.<span class="f">log</span>(<span class="f">counter</span>()); <span class="c">// 2</span>
+console.<span class="f">log</span>(<span class="f">counter</span>()); <span class="c">// 3</span>
+
+<span class="c">// Each call "remembers" the count variable even though
+// makeCounter() has long since finished running.</span></pre>
+</div>
+<p class="lesson-text">Closures are everywhere in JavaScript — in event listeners, timers, React hooks, and more. Once you understand them, a huge amount of confusing code suddenly makes sense.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Functions as first-class values</div>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">// Pass a function as an argument (callback):</span>
+<span class="k">function</span> <span class="f">runTwice</span>(fn) {
+  <span class="f">fn</span>();
+  <span class="f">fn</span>();
+}
+
+<span class="f">runTwice</span>(() => console.<span class="f">log</span>(<span class="s">"Hello!"</span>));
+<span class="c">// "Hello!"</span>
+<span class="c">// "Hello!"</span>
+
+<span class="c">// Return a function from a function:</span>
+<span class="k">function</span> <span class="f">multiplier</span>(factor) {
+  <span class="k">return</span> (n) => n * factor;
+}
+<span class="k">const</span> double = <span class="f">multiplier</span>(<span class="n">2</span>);
+<span class="k">const</span> triple = <span class="f">multiplier</span>(<span class="n">3</span>);
+console.<span class="f">log</span>(<span class="f">double</span>(<span class="n">5</span>));  <span class="c">// 10</span>
+console.<span class="f">log</span>(<span class="f">triple</span>(<span class="n">5</span>)); <span class="c">// 15</span></pre>
+</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">What is a closure in JavaScript?</div>
+<div class="quiz-opts" id="q-js-functions-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-js-functions-fb')">A function that closes the browser window</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-js-functions-fb')">A function with no parameters</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-js-functions-fb')">A function that remembers variables from its outer scope even after that scope has finished</button>
+</div>
+<div class="quiz-feedback" id="q-js-functions-fb">Exactly right! A closure happens when an inner function captures variables from its enclosing function's scope. This is fundamental to patterns like event handlers, factory functions, and React hooks.</div>
+</div>
+`
+    },
+    async: {
+      title: 'Async JavaScript',
+      course: 'JavaScript Essentials',
+      moduleNum: 9, totalModules: 10,
+      prev: { key: 'control', label: 'Control Flow' },
+      next: { key: 'fetch', label: 'Fetch API and REST' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-js">JavaScript · Module 09</span></div>
+<h1 class="lesson-main-title">Async JavaScript</h1>
+<p class="lesson-intro">JavaScript is <strong>single-threaded</strong> — it can only do one thing at a time. But websites need to do things like fetch data from a server, read files, or wait for timers — without freezing the entire page. Asynchronous programming is how JavaScript handles this. Understanding it deeply will make you a dramatically better developer.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">The problem: blocking code</div>
+<p class="lesson-text">Imagine you call a function that downloads a file. If JavaScript waited for the download to finish before moving on, the entire page would freeze — no clicks, no animations, no scrolling. This is called <strong>blocking</strong>. JavaScript's solution is to offload slow operations and come back to them later via the <strong>event loop</strong>.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Callbacks — the original approach</div>
+<p class="lesson-text">The original way to handle async was to pass a <strong>callback function</strong> to be called when the operation completed:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="f">setTimeout</span>(() => {
+  console.<span class="f">log</span>(<span class="s">"This runs after 2 seconds"</span>);
+}, <span class="n">2000</span>);
+
+console.<span class="f">log</span>(<span class="s">"This runs immediately"</span>);
+
+<span class="c">// Output order:</span>
+<span class="c">// "This runs immediately"</span>
+<span class="c">// "This runs after 2 seconds"</span></pre>
+</div>
+<p class="lesson-text">Callbacks become unmanageable when you chain multiple async operations. This is infamously called <strong>"callback hell"</strong>:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">// Callback hell — hard to read and debug</span>
+<span class="f">getUser</span>(userId, (user) => {
+  <span class="f">getPosts</span>(user.id, (posts) => {
+    <span class="f">getComments</span>(posts[<span class="n">0</span>].id, (comments) => {
+      <span class="c">// nested 3 levels deep and it keeps going...</span>
+    });
+  });
+});</pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Promises — the modern solution</div>
+<p class="lesson-text">A <strong>Promise</strong> is an object representing the eventual result of an async operation. It can be in one of three states: <strong>pending</strong>, <strong>fulfilled</strong> (resolved), or <strong>rejected</strong>. You chain operations using <code class="code-text">.then()</code> and handle errors with <code class="code-text">.catch()</code>:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">// Creating a promise</span>
+<span class="k">const</span> myPromise = <span class="k">new</span> <span class="f">Promise</span>((resolve, reject) => {
+  <span class="k">const</span> success = <span class="k">true</span>;
+  <span class="k">if</span> (success) {
+    <span class="f">resolve</span>(<span class="s">"Operation succeeded!"</span>);
+  } <span class="k">else</span> {
+    <span class="f">reject</span>(<span class="k">new</span> <span class="f">Error</span>(<span class="s">"Operation failed"</span>));
+  }
+});
+
+<span class="c">// Consuming a promise</span>
+myPromise
+  .<span class="f">then</span>((result) => console.<span class="f">log</span>(result))  <span class="c">// "Operation succeeded!"</span>
+  .<span class="f">catch</span>((err) => console.<span class="f">log</span>(err.message))
+  .<span class="f">finally</span>(() => console.<span class="f">log</span>(<span class="s">"Always runs"</span>));</pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">async/await — the cleanest syntax</div>
+<p class="lesson-text"><code class="code-text">async/await</code> is syntactic sugar over Promises. It makes async code look and behave like synchronous code — which is much easier to read and reason about:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">JavaScript</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c">// Mark a function as async</span>
+<span class="k">async function</span> <span class="f">loadData</span>() {
+  <span class="k">try</span> {
+    <span class="c">// await pauses execution until the promise resolves</span>
+    <span class="k">const</span> response = <span class="k">await</span> <span class="f">fetch</span>(<span class="s">"https://api.example.com/data"</span>);
+    <span class="k">const</span> data = <span class="k">await</span> response.<span class="f">json</span>();
+    console.<span class="f">log</span>(data);
+  } <span class="k">catch</span> (error) {
+    <span class="c">// catch handles any rejection in the try block</span>
+    console.<span class="f">log</span>(<span class="s">"Error:"</span>, error.message);
+  }
+}
+
+<span class="f">loadData</span>();
+<span class="c">// The rest of your code continues running immediately</span>
+<span class="c">// while loadData waits for the fetch</span></pre>
+</div>
+<p class="lesson-text">You can only use <code class="code-text">await</code> inside a function marked with <code class="code-text">async</code>. An <code class="code-text">async</code> function always returns a Promise, even if you return a plain value.</p>
+</div>
+
+<div class="callout callout-warn">
+<div class="callout-label">Important</div>
+<div class="callout-text">Always wrap your await calls in a try/catch. If you don't, a rejected promise will cause an "UnhandledPromiseRejection" error that can crash Node.js or silently fail in the browser.</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">What does the await keyword do?</div>
+<div class="quiz-opts" id="q-js-async-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-js-async-fb')">It makes JavaScript wait forever</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-js-async-fb')">It pauses the async function until a Promise resolves, without blocking the rest of the program</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-js-async-fb')">It converts a callback function to a Promise</button>
+</div>
+<div class="quiz-feedback" id="q-js-async-fb">Correct! await pauses only the async function — the event loop continues running other code. When the Promise resolves, the function resumes from where it paused. This is what makes it non-blocking.</div>
+</div>
+`
+    }
+  },
+  python: {
+    intro: {
+      title: 'Python Introduction',
+      course: 'Python from Scratch',
+      moduleNum: 1, totalModules: 10,
+      next: { key: 'variables', label: 'Variables and Data Types' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-py">Python · Module 01</span></div>
+<h1 class="lesson-main-title">Python Introduction</h1>
+<p class="lesson-intro">Python is one of the most widely used programming languages in the world. It powers Instagram's backend, NASA's data analysis, most of the world's AI research, and millions of automation scripts run every day. It's also one of the clearest languages to read and write — making it excellent for beginners. This module sets up everything you need to start.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Why Python?</div>
+<table class="concept-table">
+  <tr><th>Feature</th><th>What it means for you</th></tr>
+  <tr><td>Readable syntax</td><td>Code reads almost like English — easy to learn and debug</td></tr>
+  <tr><td>Versatile</td><td>Web, data science, automation, AI, scripting — Python does it all</td></tr>
+  <tr><td>Huge ecosystem</td><td>200,000+ packages on PyPI for almost any task you can imagine</td></tr>
+  <tr><td>Strong community</td><td>Enormous amount of tutorials, Stack Overflow answers, and documentation</td></tr>
+  <tr><td>Cross-platform</td><td>Same code runs on Windows, Mac, and Linux</td></tr>
+</table>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Installing Python</div>
+<p class="lesson-text">Go to <strong>python.org/downloads</strong> and download the latest version (3.12+). During installation on Windows, check the box that says <strong>"Add Python to PATH"</strong> — this is easy to miss and causes problems later if skipped.</p>
+<p class="lesson-text">Verify your installation by opening a terminal and running:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">python</span> <span class="n">--version</span>
+<span class="c"># Should output: Python 3.12.x</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Your first Python program</div>
+<p class="lesson-text">Create a file called <code class="code-text">hello.py</code> and write:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="f">print</span>(<span class="s">"Hello, World!"</span>)</pre>
+</div>
+<p class="lesson-text">Run it from your terminal with:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Terminal</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="v">python</span> hello.py
+<span class="c"># Output: Hello, World!</span></pre>
+</div>
+<p class="lesson-text">That's it. No semicolons. No curly braces. No class definition required. Python's philosophy (the "Zen of Python") is that code should be readable and simple.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Indentation — Python's defining feature</div>
+<p class="lesson-text">Unlike most languages that use curly braces <code class="code-text">{}</code> to define code blocks, Python uses <strong>indentation</strong>. This is mandatory, not optional:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c"># Correct — consistent 4-space indentation</span>
+<span class="k">if</span> <span class="n">True</span>:
+    <span class="f">print</span>(<span class="s">"This is inside the if block"</span>)
+    <span class="f">print</span>(<span class="s">"This is also inside"</span>)
+
+<span class="f">print</span>(<span class="s">"This is outside"</span>)
+
+<span class="c"># Wrong — IndentationError!</span>
+<span class="k">if</span> <span class="n">True</span>:
+<span class="f">print</span>(<span class="s">"Not indented"</span>)  <span class="c"># SyntaxError</span></pre>
+</div>
+<p class="lesson-text">The standard is <strong>4 spaces</strong> per indentation level. VS Code handles this automatically. Mixing tabs and spaces will cause errors — stick to spaces.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Comments and print()</div>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="c"># This is a single-line comment</span>
+
+<span class="s">"""
+This is a multi-line string,
+often used as a docstring or block comment.
+"""</span>
+
+<span class="c"># print() displays output to the console</span>
+<span class="f">print</span>(<span class="s">"Hello"</span>)
+<span class="f">print</span>(<span class="n">42</span>)
+<span class="f">print</span>(<span class="n">3.14</span>)
+<span class="f">print</span>(<span class="s">"Name:"</span>, <span class="s">"Ali"</span>)      <span class="c"># prints: Name: Ali (comma adds a space)</span>
+<span class="f">print</span>(<span class="s">"A"</span>, end=<span class="s">""</span>)          <span class="c"># end="" prevents newline after output</span>
+<span class="f">print</span>(<span class="s">"B"</span>, end=<span class="s">""</span>)
+<span class="c"># outputs: AB</span></pre>
+</div>
+</div>
+
+<div class="callout callout-tip">
+<div class="callout-label">Recommended Setup</div>
+<div class="callout-text">Use VS Code with the "Python" extension by Microsoft. It gives you auto-complete, debugging tools, and the ability to run Python files directly from the editor with one click. Much more convenient than the terminal for learning.</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">How does Python define code blocks (like inside if statements or functions)?</div>
+<div class="quiz-opts" id="q-python-intro-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-python-intro-fb')">Using curly braces { }</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-python-intro-fb')">Using begin/end keywords</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-python-intro-fb')">Using consistent indentation (spaces)</button>
+</div>
+<div class="quiz-feedback" id="q-python-intro-fb">Correct! Python uses indentation to define code blocks — this is one of its most distinctive features. Inconsistent indentation causes IndentationError. The standard is 4 spaces per level.</div>
+</div>
+`
+    },
+    oop: {
+      title: 'Object-Oriented Programming',
+      course: 'Python from Scratch',
+      moduleNum: 10, totalModules: 10,
+      prev: { key: 'files', label: 'File Handling' },
+      html: `
+<div class="lesson-eyebrow"><span class="tag tag-py">Python · Module 10</span></div>
+<h1 class="lesson-main-title">Object-Oriented Programming</h1>
+<p class="lesson-intro">Object-Oriented Programming (OOP) is a way of organising code around <strong>objects</strong> — bundles of data and behaviour. Instead of writing a pile of functions, you model real-world entities as objects that have properties (attributes) and actions (methods). Python is a fundamentally object-oriented language — even strings and integers are objects.</p>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Classes and objects</div>
+<p class="lesson-text">A <strong>class</strong> is a blueprint. An <strong>object</strong> (instance) is a specific thing made from that blueprint. You can create as many objects from one class as you want, each with their own data:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="k">class</span> <span class="f">Student</span>:
+    <span class="c"># __init__ is the constructor — called when you create an object</span>
+    <span class="k">def</span> <span class="f">__init__</span>(self, name, age, grade):
+        <span class="c"># self.attribute stores data on the object</span>
+        self.name = name
+        self.age = age
+        self.grade = grade
+
+    <span class="c"># A method — a function that belongs to the class</span>
+    <span class="k">def</span> <span class="f">introduce</span>(self):
+        <span class="f">print</span>(<span class="s">f"Hi, I'm {self.name}, age {self.age}, grade {self.grade}"</span>)
+
+    <span class="k">def</span> <span class="f">is_passing</span>(self):
+        <span class="k">return</span> self.grade >= <span class="n">50</span>
+
+
+<span class="c"># Creating objects from the Student class</span>
+s1 = <span class="f">Student</span>(<span class="s">"Subhaan"</span>, <span class="n">20</span>, <span class="n">88</span>)
+s2 = <span class="f">Student</span>(<span class="s">"Sara"</span>, <span class="n">21</span>, <span class="n">45</span>)
+
+s1.<span class="f">introduce</span>()       <span class="c"># Hi, I'm Subhaan, age 20, grade 88</span>
+<span class="f">print</span>(s1.<span class="f">is_passing</span>())  <span class="c"># True</span>
+<span class="f">print</span>(s2.<span class="f">is_passing</span>())  <span class="c"># False</span>
+<span class="f">print</span>(s1.name)          <span class="c"># Subhaan</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Why self?</div>
+<p class="lesson-text"><code class="code-text">self</code> refers to the specific object calling the method. When you write <code class="code-text">s1.introduce()</code>, Python automatically passes <code class="code-text">s1</code> as <code class="code-text">self</code>. This is how the method knows which object's data to use. You can name it anything, but <code class="code-text">self</code> is the universal convention — always use it.</p>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Inheritance</div>
+<p class="lesson-text"><strong>Inheritance</strong> lets a class take on all the attributes and methods of another class (the parent). This enables code reuse and allows you to model "is-a" relationships:</p>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="k">class</span> <span class="f">Person</span>:
+    <span class="k">def</span> <span class="f">__init__</span>(self, name, age):
+        self.name = name
+        self.age = age
+
+    <span class="k">def</span> <span class="f">greet</span>(self):
+        <span class="f">print</span>(<span class="s">f"Hi, I'm {self.name}"</span>)
+
+
+<span class="c"># Student inherits from Person</span>
+<span class="k">class</span> <span class="f">Student</span>(<span class="f">Person</span>):
+    <span class="k">def</span> <span class="f">__init__</span>(self, name, age, student_id):
+        <span class="k">super</span>().<span class="f">__init__</span>(name, age)  <span class="c"># call Person's __init__</span>
+        self.student_id = student_id
+
+    <span class="k">def</span> <span class="f">study</span>(self):
+        <span class="f">print</span>(<span class="s">f"{self.name} is studying"</span>)
+
+
+s = <span class="f">Student</span>(<span class="s">"Ali"</span>, <span class="n">22</span>, <span class="s">"S001"</span>)
+s.<span class="f">greet</span>()   <span class="c"># inherited from Person — "Hi, I'm Ali"</span>
+s.<span class="f">study</span>()   <span class="c"># defined on Student — "Ali is studying"</span>
+<span class="f">print</span>(s.age) <span class="c"># 22 — inherited attribute</span></pre>
+</div>
+</div>
+
+<div class="lesson-section">
+<div class="lesson-section-title">Encapsulation and special methods</div>
+<div class="code-block">
+<div class="code-block-header"><span class="code-block-lang">Python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+<pre><span class="k">class</span> <span class="f">BankAccount</span>:
+    <span class="k">def</span> <span class="f">__init__</span>(self, owner, balance=<span class="n">0</span>):
+        self.owner = owner
+        self._balance = balance  <span class="c"># _ convention: "private" (don't access directly)</span>
+
+    <span class="k">def</span> <span class="f">deposit</span>(self, amount):
+        <span class="k">if</span> amount > <span class="n">0</span>:
+            self._balance += amount
+            <span class="f">print</span>(<span class="s">f"Deposited {amount}. Balance: {self._balance}"</span>)
+
+    <span class="k">def</span> <span class="f">withdraw</span>(self, amount):
+        <span class="k">if</span> amount > self._balance:
+            <span class="f">print</span>(<span class="s">"Insufficient funds"</span>)
+        <span class="k">else</span>:
+            self._balance -= amount
+
+    <span class="c"># __str__ controls what print(account) shows</span>
+    <span class="k">def</span> <span class="f">__str__</span>(self):
+        <span class="k">return</span> <span class="s">f"Account({self.owner}, balance={self._balance})"</span>
+
+    <span class="c"># __repr__ is the developer-facing representation</span>
+    <span class="k">def</span> <span class="f">__repr__</span>(self):
+        <span class="k">return</span> <span class="s">f"BankAccount('{self.owner}', {self._balance})"</span>
+
+
+acc = <span class="f">BankAccount</span>(<span class="s">"Subhaan"</span>, <span class="n">500</span>)
+acc.<span class="f">deposit</span>(<span class="n">200</span>)   <span class="c"># Deposited 200. Balance: 700</span>
+<span class="f">print</span>(acc)          <span class="c"># Account(Subhaan, balance=700)</span></pre>
+</div>
+</div>
+
+<div class="lesson-quiz">
+<div class="lesson-quiz-title">Knowledge Check</div>
+<div class="lesson-quiz-q">What does super().__init__() do in a child class?</div>
+<div class="quiz-opts" id="q-python-oop-opts">
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-python-oop-fb')">It creates a new parent class</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'correct','q-python-oop-fb')">It calls the parent class's __init__ method to initialise inherited attributes</button>
+  <button class="quiz-opt" onclick="checkLessonQ(this,'wrong','q-python-oop-fb')">It deletes the parent class</button>
+</div>
+<div class="quiz-feedback" id="q-python-oop-fb">Correct! super().__init__() calls the parent class's constructor. Without it, the parent's attributes (like name and age) would not be initialised on the child object. Always call it when you override __init__ in a subclass.</div>
+</div>
+`
+    }
+  }
+};
+
+// ═══════════════════════════════════════
+// LESSON PANEL
+// ═══════════════════════════════════════
+function openLesson(course, key) {
+  const data = (LESSONS[course] && LESSONS[course][key]);
+  if (!data) {
+    showToast('Full lesson coming soon!', 'info');
+    return;
+  }
+  const overlay = document.getElementById('lessonOverlay');
+  document.getElementById('lessonNavTitle').textContent = data.course + ' — Module ' + String(data.moduleNum).padStart(2,'0');
+  document.getElementById('lessonProgress').textContent = data.moduleNum + ' / ' + data.totalModules;
+
+  let footer = '<div class="lesson-footer-nav">';
+  if (data.prev) {
+    footer += `<button class="lesson-nav-btn" onclick="openLesson('${course}','${data.prev.key}')">← ${data.prev.label}</button>`;
+  } else {
+    footer += '<span></span>';
+  }
+  if (data.next) {
+    footer += `<button class="lesson-nav-btn primary" onclick="openLesson('${course}','${data.next.key}')">${data.next.label} →</button>`;
+  }
+  footer += '</div>';
+
+  document.getElementById('lessonBody').innerHTML = data.html + footer;
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLesson() {
+  document.getElementById('lessonOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function checkLessonQ(btn, result, feedbackId) {
+  const container = btn.closest('.quiz-opts');
+  container.querySelectorAll('.quiz-opt').forEach(b => { b.disabled = true; b.classList.remove('correct','wrong'); });
+  btn.classList.add(result);
+  const fb = document.getElementById(feedbackId);
+  if (fb) { fb.style.display = 'block'; }
+}
+
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.innerText).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+// ═══════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════
+const feedbackMessages = {
+  correct: 'Correct! Well done.',
+  wrong: 'Not quite — try reviewing the module and giving it another shot.'
+};
+function checkAnswer(btn, id, result) {
+  const opts = document.getElementById(id + '-opts');
+  if (!opts) return;
+  opts.querySelectorAll('.quiz-option').forEach(b => { b.disabled = true; b.classList.remove('correct','wrong'); });
+  btn.classList.add(result);
+  const fb = document.getElementById(id + '-feedback');
+  if (fb) { fb.textContent = feedbackMessages[result]; fb.style.display = 'block'; }
+}
+
+// ═══════════════════════════════════════
+// RESOURCES TABS
+// ═══════════════════════════════════════
+function switchTab(id) {
+  document.querySelectorAll('.res-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.res-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ═══════════════════════════════════════
+// CHEAT SHEETS
+// ═══════════════════════════════════════
+const cheatSheets = {
+  html: { title: 'HTML Cheat Sheet', groups: [
+    { title: 'Document', items: [
+      { desc: 'DOCTYPE', code: '<!DOCTYPE html>' },
+      { desc: 'Root element', code: '<html lang="en">' },
+      { desc: 'Charset', code: '<meta charset="UTF-8">' },
+      { desc: 'Viewport', code: '<meta name="viewport" content="width=device-width, initial-scale=1.0">' },
+      { desc: 'Link CSS', code: '<link rel="stylesheet" href="style.css">' },
+    ]},
+    { title: 'Text', items: [
+      { desc: 'Headings', code: '<h1> through <h6>' },
+      { desc: 'Paragraph', code: '<p>Text</p>' },
+      { desc: 'Bold', code: '<strong>Bold</strong>' },
+      { desc: 'Italic', code: '<em>Italic</em>' },
+      { desc: 'Line break', code: '<br>' },
+      { desc: 'Horizontal rule', code: '<hr>' },
+    ]},
+    { title: 'Links & Images', items: [
+      { desc: 'Link', code: '<a href="url">Text</a>' },
+      { desc: 'Open in new tab', code: 'target="_blank" rel="noopener"' },
+      { desc: 'Image', code: '<img src="img.jpg" alt="Description">' },
+    ]},
+    { title: 'Lists', items: [
+      { desc: 'Unordered list', code: '<ul><li>Item</li></ul>' },
+      { desc: 'Ordered list', code: '<ol><li>Item</li></ol>' },
+    ]},
+    { title: 'Forms', items: [
+      { desc: 'Form', code: '<form action="/submit" method="POST">' },
+      { desc: 'Text input', code: '<input type="text" name="field">' },
+      { desc: 'Label', code: '<label for="id">Label</label>' },
+      { desc: 'Required', code: '<input required>' },
+      { desc: 'Button', code: '<button type="submit">Submit</button>' },
+    ]},
+  ]},
+  css: { title: 'CSS Cheat Sheet', groups: [
+    { title: 'Selectors', items: [
+      { desc: 'Element', code: 'p { }' },
+      { desc: 'Class', code: '.class { }' },
+      { desc: 'ID', code: '#id { }' },
+      { desc: 'Child', code: 'parent > child { }' },
+      { desc: 'Hover', code: 'a:hover { }' },
+      { desc: 'First child', code: 'p:first-child { }' },
+    ]},
+    { title: 'Box Model', items: [
+      { desc: 'Padding (inside)', code: 'padding: 16px;' },
+      { desc: 'Margin (outside)', code: 'margin: 16px auto;' },
+      { desc: 'Border', code: 'border: 1px solid #ccc;' },
+      { desc: 'Box sizing', code: 'box-sizing: border-box;' },
+    ]},
+    { title: 'Flexbox', items: [
+      { desc: 'Activate', code: 'display: flex;' },
+      { desc: 'Direction', code: 'flex-direction: row | column;' },
+      { desc: 'Main axis align', code: 'justify-content: center;' },
+      { desc: 'Cross axis align', code: 'align-items: center;' },
+      { desc: 'Gap', code: 'gap: 16px;' },
+      { desc: 'Wrap', code: 'flex-wrap: wrap;' },
+    ]},
+    { title: 'Grid', items: [
+      { desc: 'Activate', code: 'display: grid;' },
+      { desc: 'Columns', code: 'grid-template-columns: 1fr 1fr;' },
+      { desc: 'Auto columns', code: 'repeat(auto-fit, minmax(240px, 1fr))' },
+      { desc: 'Gap', code: 'gap: 24px;' },
+    ]},
+  ]},
+  js: { title: 'JavaScript Cheat Sheet', groups: [
+    { title: 'Variables', items: [
+      { desc: 'Const (preferred)', code: 'const name = "Ali";' },
+      { desc: 'Let (reassignable)', code: 'let count = 0;' },
+      { desc: 'Template literal', code: '`Hello, ${name}!`' },
+    ]},
+    { title: 'Functions', items: [
+      { desc: 'Declaration', code: 'function add(a, b) { return a + b; }' },
+      { desc: 'Arrow function', code: 'const add = (a, b) => a + b;' },
+      { desc: 'Default param', code: 'function greet(name = "World") {}' },
+    ]},
+    { title: 'Arrays', items: [
+      { desc: 'Map', code: 'arr.map(x => x * 2)' },
+      { desc: 'Filter', code: 'arr.filter(x => x > 0)' },
+      { desc: 'Reduce', code: 'arr.reduce((acc, x) => acc + x, 0)' },
+      { desc: 'Spread', code: '[...arr1, ...arr2]' },
+    ]},
+    { title: 'DOM', items: [
+      { desc: 'Select', code: 'document.querySelector(".class")' },
+      { desc: 'Select all', code: 'document.querySelectorAll("li")' },
+      { desc: 'Create', code: 'document.createElement("div")' },
+      { desc: 'Append', code: 'parent.appendChild(child)' },
+      { desc: 'Set text', code: 'el.textContent = "Hello"' },
+      { desc: 'Toggle class', code: 'el.classList.toggle("active")' },
+    ]},
+    { title: 'Async', items: [
+      { desc: 'Fetch (Promise)', code: 'fetch(url).then(r => r.json())' },
+      { desc: 'Async function', code: 'async function getData() { }' },
+      { desc: 'Await', code: 'const data = await fetch(url);' },
+      { desc: 'Try/catch', code: 'try { } catch(e) { }' },
+    ]},
+  ]},
+  python: { title: 'Python Cheat Sheet', groups: [
+    { title: 'Basics', items: [
+      { desc: 'Print', code: 'print("Hello, World!")' },
+      { desc: 'Input', code: 'name = input("Enter name: ")' },
+      { desc: 'Comment', code: '# This is a comment' },
+      { desc: 'f-string', code: 'f"Hello, {name}!"' },
+      { desc: 'Type', code: 'type(variable)' },
+      { desc: 'Convert to int', code: 'int("42")' },
+    ]},
+    { title: 'Control Flow', items: [
+      { desc: 'If/elif/else', code: 'if x > 0:\n    pass\nelif x == 0:\n    pass' },
+      { desc: 'For loop', code: 'for i in range(10):\n    print(i)' },
+      { desc: 'While loop', code: 'while x > 0:\n    x -= 1' },
+      { desc: 'List comprehension', code: '[x**2 for x in range(10)]' },
+    ]},
+    { title: 'Functions', items: [
+      { desc: 'Define', code: 'def greet(name):\n    return f"Hi {name}"' },
+      { desc: 'Default arg', code: 'def greet(name="World"):' },
+      { desc: 'Lambda', code: 'square = lambda x: x ** 2' },
+    ]},
+    { title: 'OOP', items: [
+      { desc: 'Class', code: 'class Student:' },
+      { desc: 'Constructor', code: 'def __init__(self, name):' },
+      { desc: 'Self', code: 'self.name = name' },
+      { desc: 'Create object', code: 's = Student("Ali")' },
+      { desc: 'Inheritance', code: 'class Child(Parent):' },
+      { desc: 'Super', code: 'super().__init__()' },
+    ]},
+  ]}
+};
+
+function openCheatSheet(lang) {
+  const data = cheatSheets[lang];
+  if (!data) return;
+  document.getElementById('cheatModalTitle').textContent = data.title;
+  let html = '';
+  data.groups.forEach(g => {
+    html += `<div class="cheat-group"><div class="cheat-group-title">${g.title}</div>`;
+    g.items.forEach(item => {
+      html += `<div class="cheat-item"><span class="cheat-desc">${item.desc}</span><code class="cheat-code">${item.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</code></div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('cheatInner').innerHTML = html;
+  document.getElementById('cheatModal').classList.add('open');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModalIfOutside(e, id) { if (e.target === document.getElementById(id)) closeModal(id); }
+
+// ═══════════════════════════════════════
+// CERTIFICATE MODAL
+// ═══════════════════════════════════════
+const certInfo = {
+  html: { title: 'HTML Fundamentals', icon: '📄', color: '#e44d26' },
+  css:  { title: 'Modern CSS Mastery', icon: '🎨', color: '#5b80f5' },
+  js:   { title: 'JavaScript Essentials', icon: '⚡', color: '#c9a800' },
+  python: { title: 'Python from Scratch', icon: '🐍', color: '#6ba3c9' }
+};
+function showCert(lang) {
+  const info = certInfo[lang];
+  if (!info) return;
+  document.getElementById('certInner').innerHTML = `
+    <div style="text-align:center;padding-bottom:var(--spacing-xl)">
+      <div style="font-size:2.5rem;margin-bottom:var(--spacing-lg)">${info.icon}</div>
+      <div style="font-size:0.75rem;color:var(--color-medium-gray);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px">Certificate of Completion</div>
+      <div style="font-size:1.25rem;font-weight:700;margin-bottom:4px">Subhaan Malek</div>
+      <div style="font-size:0.875rem;color:var(--color-gray-text);margin-bottom:var(--spacing-xl)">has successfully completed <strong style="color:${info.color}">${info.title}</strong></div>
+      <div style="display:flex;gap:8px;justify-content:center">
+        <button class="btn btn-primary" onclick="showToast('Certificate ready to print!','success');closeModal('certModal')">Print Certificate</button>
+        <button class="btn btn-outline" onclick="showToast('Link copied to clipboard!','success');closeModal('certModal')">Share</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('certModal').classList.add('open');
+}
+
+// ═══════════════════════════════════════
+// CONTACT FORM
+// ═══════════════════════════════════════
+function clearField(id, errId) {
+  document.getElementById(id).classList.remove('error');
+  document.getElementById(errId).style.display = 'none';
+}
+function validateField(id, errId, msg) {
+  const el = document.getElementById(id);
+  if (!el.value.trim()) {
+    el.classList.add('error');
+    const err = document.getElementById(errId);
+    err.textContent = msg; err.style.display = 'block';
+    return false;
+  }
+  el.classList.remove('error');
+  return true;
+}
+function submitForm(e) {
+  e.preventDefault();
+  let valid = validateField('fname','err-name','Please enter your name.');
+  const emailEl = document.getElementById('femail');
+  if (!emailEl.value.trim() || !/^[^@]+@[^@]+\.[^@]+$/.test(emailEl.value)) {
+    emailEl.classList.add('error');
+    const err = document.getElementById('err-email');
+    err.textContent = 'Please enter a valid email.'; err.style.display = 'block';
+    valid = false;
+  }
+  valid = validateField('fsubject','err-subject','Please enter a subject.') && valid;
+  valid = validateField('fmessage','err-message','Please write a message.') && valid;
+  if (!valid) return;
+  const btn = e.target.querySelector('[type=submit]');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('formSuccess').classList.add('show');
+    e.target.reset();
+    btn.textContent = 'Send Message'; btn.disabled = false;
+    showToast('Message sent successfully!', 'success');
+  }, 1200);
+}
+function clearForm() {
+  document.getElementById('contactForm').reset();
+  ['fname','femail','fsubject','fmessage'].forEach(id => document.getElementById(id).classList.remove('error'));
+  ['err-name','err-email','err-subject','err-message'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+  document.getElementById('formSuccess').classList.remove('show');
+}
+
+// ═══════════════════════════════════════
+// PROGRESS ANIMATION
+// ═══════════════════════════════════════
+function animateProgress() {
+  const bars = { 'prog-html': 80, 'prog-css': 55, 'prog-js': 30, 'prog-py': 10 };
+  Object.entries(bars).forEach(([id, pct]) => {
+    setTimeout(() => { const el = document.getElementById(id); if (el) el.style.width = pct + '%'; }, 300);
+  });
+}
+
+// ═══════════════════════════════════════
+// STATS COUNTER
+// ═══════════════════════════════════════
+function animateStats() {
+  const targets = { stat1: 40, stat2: 4, stat3: 12 };
+  Object.entries(targets).forEach(([id, target]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    let count = 0;
+    const step = Math.ceil(target / 30);
+    const timer = setInterval(() => {
+      count = Math.min(count + step, target);
+      el.textContent = count;
+      if (count >= target) clearInterval(timer);
+    }, 40);
+  });
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+let toastTimer;
+function showToast(msg, type = 'info') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = 'toast ' + type + ' show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════════
+function observeReveal() {
+  const els = document.querySelectorAll('.reveal:not(.visible)');
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    els.forEach(el => obs.observe(el));
+  } else {
+    els.forEach(el => el.classList.add('visible'));
+  }
+}
+
+// ═══════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeLesson();
+    closeModal('cheatModal');
+    closeModal('certModal');
+  }
+});
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  observeReveal();
+  animateStats();
+});
+</script>
+</body>
+</html>
