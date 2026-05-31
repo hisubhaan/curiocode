@@ -9,9 +9,11 @@
 ## curiocode
 > Learn. Build. Create.
 
+**Website:** https://curiocode.vercel.app
+
 A modern, fully responsive coding education platform designed to make programming education accessible, structured, and engaging.
 
-**curiocode** provides complete learning paths for HTML, CSS, JavaScript, and Python through carefully designed lessons, interactive quizzes, project-based learning, progress tracking, certificates, and a clean developer-focused user interface.
+**curiocode** provides complete learning paths for HTML, CSS, JavaScript, and Python through carefully designed lessons, interactive quizzes, project-based learning, progress tracking, certificate[...]
 
 ---
 
@@ -21,7 +23,7 @@ Most free programming resources focus on quick tutorials and short-form content.
 
 curiocode takes a different approach.
 
-The platform focuses on helping learners understand the **why behind the code**, not just memorize syntax. Every course is designed to guide students from beginner concepts to practical development skills through structured learning paths.
+The platform focuses on helping learners understand the **why behind the code**, not just memorize syntax. Every course is designed to guide students from beginner concepts to practical developmen[...]
 
 Whether you're starting your first website or learning your first programming language, curiocode provides a distraction-free environment built specifically for deep learning.
 
